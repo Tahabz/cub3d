@@ -85,27 +85,6 @@ void	player_update(t_player player)
 
 //-------------------------------------grid functions---------------------------------------------
 
-void	grid_render()
-{
-	int j,i = 0;
-	int tileX;
-	int tileY;
-	int tilecol;
-
-	while (i < NUM_ROWS)
-	{
-		j = 0;
-		while (j < NUM_COLS)
-		{
-			tileX = j * TILE_SIZE;
-			tileY = i * TILE_SIZE;
-			tilecol = map[i][j] == 1 ? 0 : 0xffffff;
-			rect(tileX, tileY, tilecol);
-			j++;
-		}
-		i++;
-	}
-}
 void	rect(int tileX, int tileY, int tilecol)
 {
 	int a = TILE_SIZE;
@@ -128,6 +107,29 @@ void	rect(int tileX, int tileY, int tilecol)
 		a--;
 	}
 }
+
+void	grid_render()
+{
+	int j,i = 0;
+	int tileX;
+	int tileY;
+	int tilecol;
+
+	while (i < NUM_ROWS)
+	{
+		j = 0;
+		while (j < NUM_COLS)
+		{
+			tileX = j * TILE_SIZE;
+			tileY = i * TILE_SIZE;
+			tilecol = map[i][j] == 1 ? 0 : 0xffffff;
+			rect(tileX, tileY, tilecol);
+			j++;
+		}
+		i++;
+	}
+}
+
 
 //----------------------------------------rendering and updating-------------------------------------
 
@@ -153,8 +155,6 @@ int main(void)
 	data = (int *)mlx_get_data_addr(image, &a,&a,&a);
 	
 	render();
-
-	data[(WINDOW_HEIGHT/2)*WINDOW_WIDTH + WINDOW_WIDTH / 2] = 0xffffff;
 	mlx_put_image_to_window(mlx,window,image,0,0);
 	mlx_loop(mlx);
 	return (0);
