@@ -19,12 +19,16 @@
 # define TILE_SIZE 32
 # define WINDOW_WIDTH TILE_SIZE * NUM_COLS
 # define WINDOW_HEIGHT TILE_SIZE * NUM_ROWS
-
+# define UP_ARROW 126
+# define RIGHT_ARROW 124
+# define DOWN_ARROW 125
+# define LEFT_ARROW 123
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
 # include <mlx.h>
 # include <unistd.h>
-
+void    ft_putchar(char c);
+void    ft_putnbr(int n);
 
 #endif

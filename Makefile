@@ -1,6 +1,6 @@
 FLAGS = -Wall -Wextra -Werror
 CC = gcc
-SRCS = *.c
+SRCS = ft_putchar.c ft_putnbr.c cub.c
 
 all: comp
 

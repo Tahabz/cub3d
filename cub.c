@@ -15,6 +15,9 @@
 
 void *image;
 int *data;
+void *window;
+void *mlx;
+
 int map[NUM_ROWS][NUM_COLS] =
 	{
 			{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -41,10 +44,24 @@ typedef struct s_player {
 	int rotationSpeed;
 	float moveSpeed;
 }				t_player;
+t_player player;
+
+int		keyPressed(int key, void *param)
+{
+	if (key == UP_ARROW)
+		write(1, "UP ARROW", 8);
+	else if (key == DOWN_ARROW)
+		write(1, "DOWN ARROW", 10);
+	else if (key == LEFT_ARROW)
+		write(1, "LEFT ARROW", 10);
+	else if (key == RIGHT_ARROW)
+		write(1, "RIGHT ARROW", 11);
+	return 0;
+}
 
 //------------------------------------------Player functions----------------------------------------
 
-void render_player(t_player player)
+void render_player()
 {
 	int a = 20;
 	int b = 20;
@@ -66,18 +83,18 @@ void render_player(t_player player)
 	}
 }
 
-void	init_player(t_player *player)
+void	init_player()
 {
-	player->x = WINDOW_WIDTH / 2;
-	player->y = WINDOW_HEIGHT / 2;
-	player->turnDirection = 0;
-	player->walkDirection = 0;
-	player->rotationAngle = M_PI / 2;
-	player->moveSpeed = 2.0;
-	player->rotationSpeed = 2 * (M_PI / 180);
+	player.x = WINDOW_WIDTH / 2;
+	player.y = WINDOW_HEIGHT / 2;
+	player.turnDirection = 0;
+	player.walkDirection = 0;
+	player.rotationAngle = M_PI / 2;
+	player.moveSpeed = 2.0;
+	player.rotationSpeed = 2 * (M_PI / 180);
 }
 
-void	player_update(t_player player)
+void	player_update()
 {
 	
 }
@@ -133,20 +150,23 @@ void	grid_render()
 
 //----------------------------------------rendering and updating-------------------------------------
 
+void	update()
+{
+	mlx_key_hook (window, keyPressed, (void *)0);
+}
 
 void	render()
 {
-	t_player player;
-	init_player(&player);
+	update();
+	init_player();
 
 	grid_render();
-	render_player(player);
+	render_player();
 
 }
 
 int main(void)
-{	void *mlx;
-	void *window;
+{	
 	int a;
 
 	mlx = mlx_init();
