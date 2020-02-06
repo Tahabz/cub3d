@@ -12,12 +12,6 @@
 
 #include "cub.h"
 
-
-void *image;
-int *data;
-void *window;
-void *mlx;
-
 int map[NUM_ROWS][NUM_COLS] =
 	{
 			{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
@@ -35,6 +29,13 @@ int map[NUM_ROWS][NUM_COLS] =
 			{1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1},
 			{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
 };
+
+void *image;
+int *data;
+void *window;
+void *mlx;
+
+
 typedef struct s_player {
 	int x;
 	int y;
@@ -46,16 +47,38 @@ typedef struct s_player {
 }				t_player;
 t_player player;
 
+
 int		keyPressed(int key, void *param)
 {
 	if (key == UP_ARROW)
-		write(1, "UP ARROW", 8);
+	{
+		player.walkDirection = +1;
+		ft_putchar('1');
+		ft_putchar('\n');
+	}
 	else if (key == DOWN_ARROW)
-		write(1, "DOWN ARROW", 10);
+		player.walkDirection = -1;
 	else if (key == LEFT_ARROW)
-		write(1, "LEFT ARROW", 10);
+		player.turnDirection = -1;
 	else if (key == RIGHT_ARROW)
-		write(1, "RIGHT ARROW", 11);
+		player.turnDirection = +1;
+	return 1;
+}
+
+int		keyReleased(int key, void *param)
+{
+	if (key == UP_ARROW)
+	{
+		player.walkDirection = 0;
+		ft_putchar('0');
+		ft_putchar('\n');
+	}
+	else if (key == DOWN_ARROW)
+		player.walkDirection = 0;
+	else if (key == LEFT_ARROW)
+		player.turnDirection = 0;
+	else if (key == RIGHT_ARROW)
+		player.turnDirection = 0;
 	return 0;
 }
 
@@ -150,19 +173,18 @@ void	grid_render()
 
 //----------------------------------------rendering and updating-------------------------------------
 
-void	update()
+int	update()
 {
-	mlx_key_hook (window, keyPressed, (void *)0);
+	//ft_putchar('X');
+	return (0);	
 }
 
 void	render()
 {
-	update();
 	init_player();
 
 	grid_render();
 	render_player();
-
 }
 
 int main(void)
@@ -175,6 +197,9 @@ int main(void)
 	data = (int *)mlx_get_data_addr(image, &a,&a,&a);
 	
 	render();
+	mlx_hook(window, 2, 0, keyPressed, (void *)0);
+	mlx_hook(window, 3, 0, keyReleased, (void *)0);
+	mlx_loop_hook(mlx, update, (void *)0);
 	mlx_put_image_to_window(mlx,window,image,0,0);
 	mlx_loop(mlx);
 	return (0);
