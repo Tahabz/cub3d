@@ -30,5 +30,7 @@
 # include <unistd.h>
 void    ft_putchar(char c);
 void    ft_putnbr(int n);
+void	rect(int tileX, int tileY, unsigned int tilecol, int size);
+void    grid_render();
 
 #endif
