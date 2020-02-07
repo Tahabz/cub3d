@@ -32,5 +32,6 @@ void    ft_putchar(char c);
 void    ft_putnbr(int n);
 void	rect(int tileX, int tileY, unsigned int tilecol, int size);
 void    grid_render();
+int		grid_hasWallAt(int x, int y);
 
 #endif

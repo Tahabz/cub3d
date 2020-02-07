@@ -46,7 +46,6 @@ typedef struct s_player {
 	int moveSpeed;
 }				t_player;
 t_player player;
-int rendered = 0;
 
 //Drawing a rectangle
 void	rect(int tileX, int tileY, unsigned int tilecol, int size)
@@ -74,7 +73,7 @@ void	rect(int tileX, int tileY, unsigned int tilecol, int size)
 }
 
 //Drawing a line
-void	line(float x, float y)
+void	line()
 {
 	int i = 90;
 	int x1, y1;
@@ -117,11 +116,9 @@ int		keyReleased(int key, void *param)
 
 void render_player()
 {
-	rect(player.x, player.y, 200, 20);
-	 line(
-		player.x,
-		player.y
-		);
+	//rect(player.x, player.y, 200, 20);
+	data[(int)((player.y)*WINDOW_WIDTH + player.x)] = 200;
+	line();
 }
 
 void	init_player()
@@ -131,7 +128,7 @@ void	init_player()
 	player.turnDirection = 0;
 	player.walkDirection = 0;
 	player.rotationAngle = M_PI / 2;
-	player.moveSpeed = 2.0;
+	player.moveSpeed = 5.0;
 	player.rotationSpeed = 2 * (M_PI / 180);
 }
 
@@ -139,24 +136,27 @@ void	player_update()
 {
 	player.rotationAngle += player.turnDirection * player.rotationSpeed;
 	int movestep = player.walkDirection * player.moveSpeed;
-	player.x += cos(player.rotationAngle) * movestep;
-	player.y += sin(player.rotationAngle) * movestep;  
-	
-	/*if (player.walkDirection == 1 || player.walkDirection == -1)
+	int x = player.x + cos(player.rotationAngle) * movestep;
+	int y = player.y + sin(player.rotationAngle) * movestep;  
+	if (!grid_hasWallAt(x, y))
 	{
-		player.x = player.x + 1;
-		render_player();
-	}*/	
+		player.x = x;
+		player.y = y;
+	}
 	grid_render();
 	render_player();
-	// ft_putnbr(player.x);
-	// ft_putchar('\n');
-	
 }
 
 
 //-------------------------------------grid functions---------------------------------------------
 
+int		grid_hasWallAt(int x, int y)
+{
+	x = (x / TILE_SIZE);
+	y = (y / TILE_SIZE);
+	printf("x = %d, y = %d, MAP = %d\n", x, y, map[y][x]);
+	return (map[y][x] == 1);
+}
 
 void	grid_render()
 {
@@ -194,14 +194,9 @@ int	update()
 
 void	render()
 {
-	//if (!rendered)
-	//{
 		init_player();
 		grid_render();
 		render_player();
-		rendered = 1;
-		printf("IM HERE!\n");
-//	}
 }
 
 int main(void)
