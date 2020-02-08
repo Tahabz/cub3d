@@ -23,15 +23,20 @@
 # define RIGHT_ARROW 124
 # define DOWN_ARROW 125
 # define LEFT_ARROW 123
+# define FOV_ANGLE 60 * (M_PI / 180)
+# define WALL_STRIP_WIDTH 1 
+# define NUM_RAYS WINDOW_WIDTH / WALL_STRIP_WIDTH
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
 # include <mlx.h>
 # include <unistd.h>
+
 void    ft_putchar(char c);
+void	castAllRays();
 void    ft_putnbr(int n);
 void	rect(int tileX, int tileY, unsigned int tilecol, int size);
-void    grid_render();
+void    render_grid();
 int		grid_hasWallAt(int x, int y);
 
 #endif

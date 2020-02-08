@@ -11,41 +11,8 @@
 /* ************************************************************************** */
 
 #include "cub.h"
+#include "cub1.h"
 
-int map[NUM_ROWS][NUM_COLS] =
-	{
-			{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-			{1, 0, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-			{1, 0, 1, 1, 0, 0, 0, 0, 0, 1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-			{1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 0, 1, 0, 0, 0, 1},
-			{1, 1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1},
-			{1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 0, 0, 1},
-			{1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
-
-void *image;
-int *data;
-void *window;
-void *mlx;
-
-
-typedef struct s_player {
-	float x;
-	float y;
-	int turnDirection;
-	int walkDirection;
-	float rotationAngle;
-	float rotationSpeed;
-	int moveSpeed;
-}				t_player;
-t_player player;
 
 //Drawing a rectangle
 void	rect(int tileX, int tileY, unsigned int tilecol, int size)
@@ -63,7 +30,6 @@ void	rect(int tileX, int tileY, unsigned int tilecol, int size)
 		{
 			//mlx_pixel_put(mlx, window, tempx, tempy, tilecol);
 			data[(int)((tempy)*WINDOW_WIDTH + tempx)] = tilecol;
-			//printf("%d\n", tilecol);
 			b--;
 			tempx++;
 		}
@@ -73,14 +39,14 @@ void	rect(int tileX, int tileY, unsigned int tilecol, int size)
 }
 
 //Drawing a line
-void	line()
+void	line(float angle)
 {
 	int i = 90;
 	int x1, y1;
 	while (i)
 	{
-		x1 = player.x + cos(player.rotationAngle)*i;
-		y1 = player.y + sin(player.rotationAngle)*i;
+		x1 = player.x + cos(angle) * i;
+		y1 = player.y + sin(angle) * i;
 		data[(y1)*WINDOW_WIDTH + x1] = 200;
 		i--;
 	}
@@ -107,7 +73,7 @@ int		keyReleased(int key, void *param)
 		player.walkDirection = 0;
 	else if (key == DOWN_ARROW)
 		player.walkDirection = 0;
-	else if (key == LEFT_ARROW)
+	if (key == LEFT_ARROW)
 		player.turnDirection = 0;
 	else if (key == RIGHT_ARROW)
 		player.turnDirection = 0;
@@ -118,7 +84,7 @@ void render_player()
 {
 	//rect(player.x, player.y, 200, 20);
 	data[(int)((player.y)*WINDOW_WIDTH + player.x)] = 200;
-	line();
+	line(player.rotationAngle);
 }
 
 void	init_player()
@@ -128,7 +94,7 @@ void	init_player()
 	player.turnDirection = 0;
 	player.walkDirection = 0;
 	player.rotationAngle = M_PI / 2;
-	player.moveSpeed = 5.0;
+	player.moveSpeed = 1.0;
 	player.rotationSpeed = 2 * (M_PI / 180);
 }
 
@@ -136,14 +102,14 @@ void	player_update()
 {
 	player.rotationAngle += player.turnDirection * player.rotationSpeed;
 	int movestep = player.walkDirection * player.moveSpeed;
-	int x = player.x + cos(player.rotationAngle) * movestep;
-	int y = player.y + sin(player.rotationAngle) * movestep;  
+	float x = player.x + cos(player.rotationAngle) * movestep;
+	float y = player.y + sin(player.rotationAngle) * movestep;
 	if (!grid_hasWallAt(x, y))
 	{
 		player.x = x;
 		player.y = y;
 	}
-	grid_render();
+	render_grid();
 	render_player();
 }
 
@@ -154,11 +120,12 @@ int		grid_hasWallAt(int x, int y)
 {
 	x = (x / TILE_SIZE);
 	y = (y / TILE_SIZE);
-	printf("x = %d, y = %d, MAP = %d\n", x, y, map[y][x]);
+	//  printf("x = %d, y = %d, MAP = %d\n", x, y, map[y][x]);
+	//printf("%f", FOV_ANGLE);
 	return (map[y][x] == 1);
 }
 
-void	grid_render()
+void	render_grid()
 {
 	int j,i = 0;
 	int tileX;
@@ -180,6 +147,31 @@ void	grid_render()
 	}
 }
 
+//----------------------------------------Ray Casting Functions--------------------------------------
+
+void	render_ray(rayAngle)
+{
+	line(rayAngle);
+}
+
+void	init_ray(float rayAngle)
+{
+	ray.rayAngle = rayAngle;
+}
+
+void	castAllRays()
+{
+	int i = 0;
+	float rayAngle = player.rotationAngle - (FOV_ANGLE / 2);
+
+	while (i < NUM_RAYS)
+	{
+		init_ray(rayAngle);
+		rays[i] = ray;
+		rayAngle += FOV_ANGLE / NUM_RAYS;
+		i++;
+	}
+}
 
 //----------------------------------------rendering and updating-------------------------------------
 
@@ -188,15 +180,25 @@ int	update()
 	mlx_hook(window, 2, 0, keyPressed, (void *)0);
 	mlx_hook(window, 3, 0, keyReleased, (void *)0);
 	mlx_put_image_to_window(mlx,window,image,0,0);
-	player_update();
+	//player_update();
+	//castAllRays();
 	return (0);	
 }
 
 void	render()
 {
-		init_player();
-		grid_render();
-		render_player();
+	int i;
+
+	init_player();
+	render_grid();
+	render_player();
+	castAllRays();
+	i = 0;
+	while (i < NUM_RAYS)
+	{
+		render_ray(rays[i].rayAngle);
+		i++;
+	}
 }
 
 int main(void)
