@@ -130,8 +130,6 @@ int		grid_hasWallAt(int x, int y)
 {
 	x = (x / TILE_SIZE);
 	y = (y / TILE_SIZE);
-	//  printf("x = %d, y = %d, MAP = %d\n", x, y, map[y][x]);
-	//printf("%f", FOV_ANGLE);
 	return (map[y][x] == 1);
 }
 
