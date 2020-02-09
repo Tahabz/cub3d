@@ -8,4 +8,4 @@ comp :
 	gcc $(FLAG) -I /usr/local/include $(SRCS) -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit
 
 clean :
-	rm -rf *.o
+	rm -rf a.out*
