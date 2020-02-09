@@ -14,6 +14,16 @@
 #include "cub1.h"
 
 
+
+// //Normalize Angle
+// float normalizeAngle(float angle)
+// {
+// 	angle = angle / (2 * M_PI);
+// 	if (angle < 0)
+// 		angle = (2 * M_PI) + angle;
+// 	return angle;
+// }
+
 //Drawing a rectangle
 void	rect(int tileX, int tileY, unsigned int tilecol, int size)
 {
@@ -149,7 +159,7 @@ void	render_grid()
 
 //----------------------------------------Ray Casting Functions--------------------------------------
 
-void	render_ray(rayAngle)
+void	render_ray(float rayAngle)
 {
 	line(rayAngle);
 }
@@ -161,14 +171,16 @@ void	init_ray(float rayAngle)
 
 void	castAllRays()
 {
+	float FOV_ANGLE = 60 * (M_PI / 180);
+	float WALL_STRIP_WIDTH = 1 ;
 	int i = 0;
 	float rayAngle = player.rotationAngle - (FOV_ANGLE / 2);
-
 	while (i < NUM_RAYS)
 	{
 		init_ray(rayAngle);
 		rays[i] = ray;
-		rayAngle += FOV_ANGLE / NUM_RAYS;
+		render_ray(rayAngle);
+		rayAngle += FOV_ANGLE / (NUM_RAYS);
 		i++;
 	}
 }
@@ -180,8 +192,8 @@ int	update()
 	mlx_hook(window, 2, 0, keyPressed, (void *)0);
 	mlx_hook(window, 3, 0, keyReleased, (void *)0);
 	mlx_put_image_to_window(mlx,window,image,0,0);
-	//player_update();
-	//castAllRays();
+	player_update();
+	castAllRays();
 	return (0);	
 }
 
@@ -193,12 +205,6 @@ void	render()
 	render_grid();
 	render_player();
 	castAllRays();
-	i = 0;
-	while (i < NUM_RAYS)
-	{
-		render_ray(rays[i].rayAngle);
-		i++;
-	}
 }
 
 int main(void)
@@ -209,7 +215,6 @@ int main(void)
 	window = mlx_new_window(mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Title");	
 	image = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
 	data = (int *)mlx_get_data_addr(image, &a,&a,&a);
-	
 	render();
 	mlx_loop_hook(mlx, update, (void *)0);
 	mlx_loop(mlx);

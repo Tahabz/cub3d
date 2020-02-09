@@ -23,9 +23,7 @@
 # define RIGHT_ARROW 124
 # define DOWN_ARROW 125
 # define LEFT_ARROW 123
-# define FOV_ANGLE 60 * (M_PI / 180)
-# define WALL_STRIP_WIDTH 1 
-# define NUM_RAYS WINDOW_WIDTH / WALL_STRIP_WIDTH
+# define NUM_RAYS WINDOW_WIDTH
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
