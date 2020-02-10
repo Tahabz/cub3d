@@ -15,14 +15,14 @@
 
 
 
-// //Normalize Angle
-// float normalizeAngle(float angle)
-// {
-// 	angle = angle / (2 * M_PI);
-// 	if (angle < 0)
-// 		angle = (2 * M_PI) + angle;
-// 	return angle;
-// }
+//Normalize Angle
+float normalizeAngle(float angle)
+{
+	angle = remainderf(angle,(2 * M_PI));
+	if (angle < 0)
+		angle = (2 * M_PI) + angle;
+	return angle;
+}
 
 //Drawing a rectangle
 void	rect(int tileX, int tileY, unsigned int tilecol, int size)
@@ -51,12 +51,12 @@ void	rect(int tileX, int tileY, unsigned int tilecol, int size)
 //Drawing a line
 void	line(float angle)
 {
-	int i = 90;
+	int i = 300;
 	int x1, y1;
 	while (i)
 	{
-		x1 = player.x + cos(angle) * i;
-		y1 = player.y + sin(angle) * i;
+		x1 = (int)(player.x + cos(angle) * i);
+		y1 = (int)(player.y + sin(angle) * i);
 		data[(y1)*WINDOW_WIDTH + x1] = 200;
 		i--;
 	}
@@ -66,6 +66,7 @@ void	line(float angle)
 
 int		keyPressed(int key, void *param)
 {
+	param = NULL;
 	if (key == UP_ARROW)
 		player.walkDirection = +1;
 	else if (key == DOWN_ARROW)
@@ -79,6 +80,7 @@ int		keyPressed(int key, void *param)
 
 int		keyReleased(int key, void *param)
 {
+	param = NULL;
 	if (key == UP_ARROW)
 		player.walkDirection = 0;
 	else if (key == DOWN_ARROW)
@@ -159,23 +161,55 @@ void	render_grid()
 
 void	render_ray(float rayAngle)
 {
+	int yintersection, xintersection;
+	float xstep, ystep;
+	int horWallHitX, horWallHity;
+	//---------------CLOSEST HORIZONTAL GRID INTERSECTION-------------------------
+
+	yintersection = (player.y / TILE_SIZE) * TILE_SIZE;
+	xintersection = player.x + (yintersection - player.y) / tan(rayAngle);
+	yintersection += (ray.isRayFacingDown ? TILE_SIZE : 0);
+	ystep = TILE_SIZE;
+	xstep = TILE_SIZE / tan(rayAngle);
+	ystep *= (ray.isRayFacingUp ? -1 : 1);
+	xstep *= (ray.isRayFacingLeft ? -1 : 1);
+	horWallHitX = xintersection;
+	horWallHity = yintersection;
+	printf("%d\n", horWallHity);
+	while (1 == 1)
+	{
+		if (grid_hasWallAt(horWallHitX, horWallHity))
+		{
+			break;
+		}
+		horWallHitX += xstep;
+		horWallHity += ystep;
+	}
 	line(rayAngle);
 }
 
 void	init_ray(float rayAngle)
 {
 	ray.rayAngle = rayAngle;
+	ray.distance = 0;
+	ray.rayAngle = 0;
+	ray.wallHitX = 0;
+	ray.wallHitY = 0;
+	ray.isRayFacingDown = (rayAngle > 0 && rayAngle < M_PI);
+	ray.isRayFacingUp = !ray.isRayFacingDown;
+	ray.isRayFacingRight = (rayAngle < (M_PI / 2) || rayAngle > (3 * M_PI) / 2);
+	ray.isRayFacingLeft = !ray.isRayFacingRight;
 }
 
 void	castAllRays()
 {
+
 	float FOV_ANGLE = 60 * (M_PI / 180);
-	float WALL_STRIP_WIDTH = 1 ;
-	int i = 0;
 	float rayAngle = player.rotationAngle - (FOV_ANGLE / 2);
+	int i = 0;
 	while (i < NUM_RAYS)
 	{
-		init_ray(rayAngle);
+		init_ray(normalizeAngle(rayAngle));
 		rays[i] = ray;
 		render_ray(rayAngle);
 		rayAngle += FOV_ANGLE / (NUM_RAYS);
@@ -187,8 +221,8 @@ void	castAllRays()
 
 int	update()
 {
-	mlx_hook(window, 2, 0, keyPressed, (void *)0);
-	mlx_hook(window, 3, 0, keyReleased, (void *)0);
+	mlx_hook(window, 2, 0, keyPressed, NULL);
+	mlx_hook(window, 3, 0, keyReleased, NULL);
 	mlx_put_image_to_window(mlx,window,image,0,0);
 	player_update();
 	castAllRays();
@@ -197,8 +231,6 @@ int	update()
 
 void	render()
 {
-	int i;
-
 	init_player();
 	render_grid();
 	render_player();
@@ -207,12 +239,13 @@ void	render()
 
 int main(void)
 {	
-	int a;
+	int a,b,c;
 
 	mlx = mlx_init();
 	window = mlx_new_window(mlx, WINDOW_WIDTH, WINDOW_HEIGHT, "Title");	
 	image = mlx_new_image(mlx, WINDOW_WIDTH, WINDOW_HEIGHT);
-	data = (int *)mlx_get_data_addr(image, &a,&a,&a);
+	data = (int *)mlx_get_data_addr(image, &a,&b,&c);
+	printf("%d\n", 1==1);
 	render();
 	mlx_loop_hook(mlx, update, (void *)0);
 	mlx_loop(mlx);

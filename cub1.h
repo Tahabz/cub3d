@@ -23,17 +23,24 @@ void *mlx;
 
 
 typedef struct s_player {
-	float x;
-	float y;
-	int turnDirection;
-	int walkDirection;
-	float rotationAngle;
-	float rotationSpeed;
-	int moveSpeed;
+	float	x;
+	float	y;
+	int		turnDirection;
+	int		walkDirection;
+	float	rotationAngle;
+	float	rotationSpeed;
+	int		moveSpeed;
 }				t_player;
 
 typedef struct s_rays {
-	float rayAngle;
+	float 	rayAngle;
+	float	wallHitX;
+	float	wallHitY;
+	float	distance;
+	int		isRayFacingDown;
+	int		isRayFacingUp;
+	int		isRayFacingLeft;
+	int		isRayFacingRight;
 }				t_rays;
 
 t_rays rays[NUM_RAYS];
