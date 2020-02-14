@@ -29,6 +29,11 @@ float normalizeAngle(float angle)
 	return angle;
 }
 
+//Distance Between two points
+int	distance(int x, int y)
+{
+	return ((int)sqrt((x - player.x) * (x - player.x) + (y - player.y) * (y - player.y)));
+}
 //Drawing a rectangle
 void	rect(int tileX, int tileY, unsigned int tilecol, int size)
 {
@@ -63,7 +68,7 @@ void	line(float angle, int x, int y)
 		x1 = (int)(player.x + cos(angle) * i);
 		y1 = (int)(player.y + sin(angle) * i);
 		if (y1 >= 0 && y1 <= WINDOW_HEIGHT && x1 >= 0 && x1 <= WINDOW_WIDTH)
-		data[(y1)*WINDOW_WIDTH + x1] = 200;
+			data[(y1)*WINDOW_WIDTH + x1] = 200;
 		i--;
 	}
 }
@@ -112,7 +117,7 @@ void	init_player()
 	player.turnDirection = 0;
 	player.walkDirection = 0;
 	player.rotationAngle = M_PI / 2;
-	player.moveSpeed = 1.0;
+	player.moveSpeed = 2.0;
 	player.rotationSpeed = 2 * (M_PI / 180);
 }
 
@@ -169,7 +174,8 @@ void	render_ray()
 {
 	float yintersection, xintersection;
 	float xstep, ystep;
-	float horWallHitX, horWallHitY;
+	float horWallHitX, horWallHitY, horDistance = 1000000000;
+
 	//---------------CLOSEST HORIZONTAL GRID INTERSECTION------------------------
 	yintersection = floor(player.y / TILE_SIZE) * TILE_SIZE;
 	yintersection += (ray.isRayFacingDown ? TILE_SIZE : 0);
@@ -188,12 +194,44 @@ void	render_ray()
 	{
 		if (grid_hasWallAt(horWallHitX, horWallHitY))
 		{
-			line(ray.rayAngle, horWallHitX, horWallHitY);
+			horDistance = distance(horWallHitX, horWallHitY);
 			break;
 		}
 		horWallHitX += xstep;
 		horWallHitY += ystep;
 	}
+	//---------------CLOSEST Vertical GRID INTERSECTION------------------------
+
+	float verWallHitX, verWallHitY, verDistance = 1000000000;
+
+	xintersection = floor(player.x / TILE_SIZE) * TILE_SIZE;
+	xintersection += (ray.isRayFacingRight ? TILE_SIZE : 0);
+	yintersection = player.y + (xintersection - player.x) * tan(ray.rayAngle);
+	xstep = TILE_SIZE;
+	xstep *= (ray.isRayFacingLeft ? -1 : 1);
+	ystep = TILE_SIZE * tan(ray.rayAngle);
+	ystep *= (ray.isRayFacingUp && ystep > 0) ? -1 : 1;
+	ystep *= (ray.isRayFacingDown && ystep < 0) ? -1 : 1;
+
+	verWallHitX = xintersection;
+	verWallHitY = yintersection;
+	 if(ray.isRayFacingLeft)
+	 	verWallHitX--;
+	while (verWallHitY >= 0 && verWallHitY <= WINDOW_HEIGHT && verWallHitX >= 0 && verWallHitX <= WINDOW_WIDTH)
+	{
+		if (grid_hasWallAt(verWallHitX, verWallHitY))
+		{
+			verDistance = distance(verWallHitX, verWallHitY);
+			break;
+		}
+		verWallHitX += xstep;
+		verWallHitY += ystep;
+	}
+	if (verDistance > horDistance)
+		line(ray.rayAngle, horWallHitX, horWallHitY);
+	else
+		line(ray.rayAngle, verWallHitX, verWallHitY);
+
 }
 
 void	init_ray(float rayAngle)
