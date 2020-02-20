@@ -30,7 +30,7 @@ float normalizeAngle(float angle)
 }
 
 //Distance Between two points
-int	distance(int x, int y)
+float	distance(float x, float y)
 {
 	return (sqrt((x - player.x) * (x - player.x) + (y - player.y) * (y - player.y)));
 }
@@ -62,7 +62,7 @@ void	rect(int tileX, int tileY, int width, int height, unsigned int tilecol)
 //Drawing a line
 void	line(float angle, int x, int y)
 {
-	int i = distance(x, y);
+	int i = (int)distance(x, y);
 	int x1, y1;
 	while (i)
 	{
@@ -119,7 +119,7 @@ void	init_player()
 	player.walkDirection = 0;
 	player.rotationAngle = M_PI / 2;
 	player.moveSpeed = 5.0;
-	player.rotationSpeed = 2 * (M_PI / 180);
+	player.rotationSpeed = 1 * (M_PI / 180);
 }
 
 void	player_update()
@@ -219,7 +219,7 @@ void	render_ray()
 	verWallHitY = yintersection;
 	 if(ray.isRayFacingLeft)
 	 	verWallHitX--;
-	while (verWallHitY >= 0 && verWallHitY <= WINDOW_HEIGHT && verWallHitX >= 0 && verWallHitX <= WINDOW_WIDTH)
+	while (verWallHitY >= 0 && verWallHitY < WINDOW_HEIGHT && verWallHitX >= 0 && verWallHitX < WINDOW_WIDTH)
 	{
 		if (grid_hasWallAt(verWallHitX, verWallHitY))
 		{
@@ -277,7 +277,6 @@ void	render_walls()
 	int y;
 	
 	rect( 
-			
 			0,
 			0,
 			WINDOW_WIDTH,
@@ -288,7 +287,7 @@ void	render_walls()
 	while (i < WINDOW_WIDTH)
 	{
 		ray = rays[i];
-		ray_distance = ray.distance;
+		ray_distance = ray.distance * cos(ray.rayAngle - player.rotationAngle);
 		wallStripHeight = (TILE_SIZE / ray_distance) * distance_proj_plane;
 		//printf("%f\n", wallStripHeight);
 		// rect( 

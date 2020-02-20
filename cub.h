@@ -16,7 +16,7 @@
 
 # define NUM_ROWS 28
 # define NUM_COLS 38
-# define TILE_SIZE 50
+# define TILE_SIZE 45
 # define WINDOW_WIDTH TILE_SIZE * NUM_COLS
 # define WINDOW_HEIGHT TILE_SIZE * NUM_ROWS
 # define UP_ARROW 126
