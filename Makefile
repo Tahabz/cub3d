@@ -1,4 +1,4 @@
-FLAGS = -Wall -Wextra -Werror -Ofast
+FLAGS = -Wall -Wextra -Werror
 DFLAGS = -g3 -fsanitize=address
 CC = gcc
 SRCS = ft_putchar.c ft_putnbr.c cub.c
