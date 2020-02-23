@@ -59,6 +59,18 @@ void	rect(int tileX, int tileY, /*int width*/ int height, unsigned int tilecol)
 	}
 }
 
+void	line(int tileX, int tileY, int height, unsigned int tilecol)
+{
+	while (height >= 0)
+	{
+		if (tileY >= 0 && tileY < WINDOW_HEIGHT3D && tileX >= 0 && tileX < WINDOW_WIDTH3D)
+			data[(int)((tileY)*WINDOW_WIDTH3D + tileX)] = tilecol;
+		tileY++;
+		height--;
+	}
+}
+
+
 //Drawing a line
 
 
@@ -277,40 +289,11 @@ void	render_walls()
 		ray = rays[i];
 		ray_distance = ray.distance * cos(ray.rayAngle - player.rotationAngle);
 		wallStripHeight = (TILE_SIZE / ray_distance) * distance_proj_plane;
-		//printf("%f\n", wallStripHeight);
-		
 		if (wallStripHeight > WINDOW_HEIGHT3D)
 			wallStripHeight = WINDOW_HEIGHT3D;
-		rect
-		(
-			i,
-			0,
-			//WALL_STRIP_WIDTH,
-			(WINDOW_HEIGHT3D - wallStripHeight) / 2,
-			0
-		);
-		rect
-		(
-			i,
-			(WINDOW_HEIGHT3D - wallStripHeight) / 2,
-			//WALL_STRIP_WIDTH,
-			wallStripHeight,
-			0xffffff
-		);
-		// y = (WINDOW_HEIGHT3D - wallStripHeight ) / 2);
-		// while (y < (WINDOW_HEIGHT3D / 2 ) + (wallStripHeight / 2))
-		// {
-		// 	data[y * WINDOW_WIDTH3D + i] = 0xFFFFFF;
-		// 	y++;			
-		// }
-		rect
-		(
-			i,
-			(WINDOW_HEIGHT3D  + wallStripHeight) / 2,
-			//WALL_STRIP_WIDTH,
-			(WINDOW_HEIGHT3D - wallStripHeight) / 2,
-			200
-		);
+		line(i, 0, (WINDOW_HEIGHT3D - wallStripHeight) / 2, 0);
+		line(i, (WINDOW_HEIGHT3D - wallStripHeight) / 2, wallStripHeight, 0xffffff );
+		line(i,	(WINDOW_HEIGHT3D  + wallStripHeight) / 2, (WINDOW_HEIGHT3D - wallStripHeight) / 2,	200);
 		i++;
 	}
 }

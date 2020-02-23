@@ -37,7 +37,7 @@ void    render_walls();
 void    ft_putchar(char c);
 void	castAllRays();
 void    ft_putnbr(int n);
-void    rect(int tileX, int tileY,/* int width,*/ int height, unsigned int tilecol);
+void    rect(int tileX, int tileY, /*int width,*/ int height, unsigned int tilecol);
 void    render_grid();
 int		grid_hasWallAt(int x, int y);
 
