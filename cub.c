@@ -35,31 +35,29 @@ float	distance(float x, float y)
 	return (sqrt((x - player.x) * (x - player.x) + (y - player.y) * (y - player.y)));
 }
 //Drawing a rectangle
-void	rect(int tileX, int tileY, /*int width*/ int height, unsigned int tilecol)
+void rect(int tileX, int tileY, unsigned int tilecol, int size)
 {
-	int a = height;
-	//int b = width;
+	int a = size;
+	int b = size;
 	float tempx = tileX;
 	float tempy = tileY;
 
-	while (a >= 0)
+	while (a)
 	{
-	//	b = width;
-	//	tempx = tileX;
-	//	while (b >= 0)
-	//	{
-			//mlx_pixel_put(mlx, window, tempx, tempy, tilecol);
-			if (tempy >= 0 && tempy < WINDOW_HEIGHT3D && tempx >= 0 && tempx < WINDOW_WIDTH3D)
-				data[(int)((tempy)*WINDOW_WIDTH3D + tempx)] = tilecol;
-	//		b--;
-	//		tempx++;
-	//	}
+		b = size;
+		tempx = tileX;
+		while (b)
+		{
+			data[(int)((tempy)*WINDOW_WIDTH2D + tempx)] = tilecol;
+			b--;
+			tempx++;
+		}
 		tempy++;
 		a--;
 	}
 }
 
-void	line(int tileX, int tileY, int height, unsigned int tilecol)
+void	line3d(int tileX, int tileY, int height, unsigned int tilecol)
 {
 	while (height >= 0)
 	{
@@ -69,6 +67,21 @@ void	line(int tileX, int tileY, int height, unsigned int tilecol)
 		height--;
 	}
 }
+
+void	line(float angle, int x, int y)
+{
+	int i = (int)sqrt((x - player.x) * (x - player.x) + (y - player.y) * (y - player.y));
+	int x1, y1;
+	while (i)
+	{
+		x1 = (int)(player.x + cos(angle) * i);
+		y1 = (int)(player.y + sin(angle) * i);
+		if (y1 >= 0 && y1 < WINDOW_HEIGHT2D && x1 >= 0 && x1 < WINDOW_WIDTH2D)
+			data[(y1)*WINDOW_WIDTH2D + x1] = 200;
+		i--;
+	}
+}
+
 
 
 //Drawing a line
@@ -134,6 +147,7 @@ void	player_update()
 		player.y = y;
 	render_walls();
 	//render_player();
+//	render_grid();
 }
 
 
@@ -148,27 +162,27 @@ int		grid_hasWallAt(int x, int y)
 	return 1;
 }
 
-// void	render_grid()
-// {
-// 	int j,i = 0;
-// 	int tileX;
-// 	int tileY;
-// 	unsigned int tilecol;
+void	render_grid()
+{
+	int j,i = 0;
+	int tileX;
+	int tileY;
+	unsigned int tilecol;
 
-// 	while (i < NUM_ROWS)
-// 	{
-// 		j = 0;
-// 		while (j < NUM_COLS)
-// 		{
-// 			tileX = j * TILE_SIZE;
-// 			tileY = i * TILE_SIZE;
-// 			tilecol = map[i][j] == 1 ? 0 : 0xffffff;
-// 			rect(tileX, tileY, tilecol, TILE_SIZE);
-// 			j++;
-// 		}
-// 		i++;
-// 	}
-// }
+	while (i < NUM_ROWS)
+	{
+		j = 0;
+		while (j < NUM_COLS)
+		{
+			tileX = j * TILE_SIZE;
+			tileY = i * TILE_SIZE;
+			tilecol = map[i][j] == 1 ? 0 : 0xffffff;
+			rect(tileX, tileY, tilecol, TILE_SIZE);
+			j++;
+		}
+		i++;
+	}
+}
 
 //----------------------------------------Ray Casting Functions--------------------------------------
 
@@ -231,13 +245,14 @@ void	render_ray()
 	}
 	if (verDistance > horDistance)
 	{
-		//line(ray.rayAngle, horWallHitX, horWallHitY);
+	//	line(ray.rayAngle, horWallHitX, horWallHitY);
 		ray.distance = horDistance;
 	}
 	else
+	{
 		ray.distance = verDistance;
-		//line(ray.rayAngle, verWallHitX, verWallHitY);
-	
+	//	line(ray.rayAngle, verWallHitX, verWallHitY);
+	}
 }
 
 void	init_ray(float rayAngle)
@@ -274,15 +289,6 @@ void	render_walls()
 	float distance_proj_plane;
 	float wallStripHeight;
 	i = 0;
-	//int y;
-	
-	// rect( 
-	// 		0,
-	// 		0,
-	// 		WINDOW_WIDTH3D,
-	// 		WINDOW_HEIGHT3D,
-	// 		0
-	// 		);
 	distance_proj_plane = (WINDOW_WIDTH3D / 2) / tan(FOV_ANGLE / 2);
 	while (i < WINDOW_WIDTH3D)
 	{
@@ -291,9 +297,9 @@ void	render_walls()
 		wallStripHeight = (TILE_SIZE / ray_distance) * distance_proj_plane;
 		if (wallStripHeight > WINDOW_HEIGHT3D)
 			wallStripHeight = WINDOW_HEIGHT3D;
-		line(i, 0, (WINDOW_HEIGHT3D - wallStripHeight) / 2, 0);
-		line(i, (WINDOW_HEIGHT3D - wallStripHeight) / 2, wallStripHeight, 0xffffff );
-		line(i,	(WINDOW_HEIGHT3D  + wallStripHeight) / 2, (WINDOW_HEIGHT3D - wallStripHeight) / 2,	200);
+		line3d(i, 0, (WINDOW_HEIGHT3D - wallStripHeight) / 2, 0);
+		line3d(i, (WINDOW_HEIGHT3D - wallStripHeight) / 2, wallStripHeight, 0xffffff );
+		line3d(i,	(WINDOW_HEIGHT3D  + wallStripHeight) / 2, (WINDOW_HEIGHT3D - wallStripHeight) / 2,	200);
 		i++;
 	}
 }
@@ -304,18 +310,18 @@ void	render_walls()
 int	update()
 {
 	mlx_put_image_to_window(mlx,window,image,0,0);
-	castAllRays();
 	player_update();
+	castAllRays();
 	return (0);	
 }
 
 void	render()
 {
 	init_player();
-	//render_grid();
+//	render_grid();
+	render_player();
 	castAllRays();
 	render_walls();
-	render_player();
 }
 
 int main(void)
@@ -323,7 +329,7 @@ int main(void)
 	int a,b,c;
 
 	mlx = mlx_init();
-	window = mlx_new_window(mlx, WINDOW_WIDTH3D, WINDOW_HEIGHT3D, "Title");	
+	window = mlx_new_window(mlx, WINDOW_WIDTH3D, WINDOW_HEIGHT3D, "Cub3D");	
 	mlx_hook(window, 2, 0, keyPressed, NULL);
 	mlx_hook(window, 3, 0, keyReleased, NULL);
 	image = mlx_new_image(mlx, WINDOW_WIDTH3D, WINDOW_HEIGHT3D);

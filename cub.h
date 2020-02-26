@@ -14,8 +14,8 @@
 # define CUB_H
 
 
-# define NUM_ROWS (28 - 10)
-# define NUM_COLS (38 - 8)
+# define NUM_ROWS (18)
+# define NUM_COLS (30)
 # define TILE_SIZE 70
 # define WINDOW_WIDTH2D TILE_SIZE * NUM_COLS
 # define WINDOW_HEIGHT2D TILE_SIZE * NUM_ROWS
@@ -37,8 +37,9 @@ void    render_walls();
 void    ft_putchar(char c);
 void	castAllRays();
 void    ft_putnbr(int n);
-void    rect(int tileX, int tileY, /*int width,*/ int height, unsigned int tilecol);
+void    rect(int tileX, int tileY, unsigned int tilecol, int size);
 void    render_grid();
 int		grid_hasWallAt(int x, int y);
+void	line3d(int tileX, int tileY, int height, unsigned int tilecol);
 
 #endif
