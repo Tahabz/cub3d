@@ -325,35 +325,10 @@ void parse_map()
 	char *line;
 	int height;
 	int fd;
-	//char **map;
 	int i;
+
 	fd = open("file.cub", O_RDONLY);
 	height = 1;
-	// if (fd)
-	// {
-	// 	while (get_next_line(fd, &line))
-	// 	{
-	// 		height++;
-	// 		free(line);
-	// 	}
-	// 	width = strlen(line);
-	// 	printf("x=%d, y=%d\n", width, height);
-	// 	free(line);
-	// 	close(fd);
-	// 	fd = open("file.cub", O_RDONLY);
-	// 	len = sizeof(char *) * height + sizeof(char) * width * height;
-	// 	map = (char **)malloc(len);
-	// 	ptr = (char *)(map + height);
-	// 	i = 0;
-	// 	map[height] = ptr + width * height;
-	// 	while (i++ < height)
-	// 	{
-	// 		map[i] = (ptr + width * i);
-	// 		get_next_line(fd, &map[i]);
-	// 		printf("%s\n", map[i]);
-	// 	}
-	// }
-
 	if (fd)
 	{
 		while (get_next_line(fd, &line))
@@ -362,13 +337,35 @@ void parse_map()
 			free(line);
 		}
 		width = strlen(line);
-		printf("x=%d, y=%d\n", width, height);
 		free(line);
 		close(fd);
 		fd = open("file.cub", O_RDONLY);
-		map = (char **)malloc(height * sizeof(char *));
+		map = (char **)malloc((height + 1) * sizeof(char *));
 		i = 0;
-		while (get_next_line(fd, &map[i++]));
+		while (get_next_line(fd, &map[i++]))
+		map[height] = 0;
+	}
+}
+
+void	check_map_errors()
+{
+	int i;
+
+	i = 0;
+	while (map[0][i])
+		if (map[0][i++] != '1')
+			printf("ERROOOR\n");
+	i = 0;
+	while (map[NUM_ROWS - 1][i])
+		if (map[NUM_ROWS - 1][i++] != '1')
+			printf("ERROOOR\n");
+	i = 0;
+	while (map[i])
+	{
+		if (map[i][NUM_COLS - 1] != '1')
+			printf("ERROOOR\n");
+		if (map[i++][0] != '1')
+			printf("ERROOOR\n");
 	}
 }
 
@@ -376,6 +373,7 @@ int main(void)
 {
 	int a, b, c;
 	parse_map();
+	check_map_errors();
 	mlx = mlx_init();
 	window = mlx_new_window(mlx, WINDOW_WIDTH3D, WINDOW_HEIGHT3D, "Cub3D");
 	mlx_hook(window, 2, 0, keyPressed, NULL);
