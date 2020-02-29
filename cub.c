@@ -12,8 +12,7 @@
 
 #include "cub.h"
 #include "cub1.h"
-
-
+#include <fcntl.h>
 
 /**
 * normalizeAngle
@@ -30,7 +29,7 @@ float normalizeAngle(float angle)
 }
 
 //Distance Between two points
-float	distance(float x, float y)
+float distance(float x, float y)
 {
 	return (sqrt((x - player.x) * (x - player.x) + (y - player.y) * (y - player.y)));
 }
@@ -57,7 +56,7 @@ void rect(int tileX, int tileY, unsigned int tilecol, int size)
 	}
 }
 
-void	line3d(int tileX, int tileY, int height, unsigned int tilecol)
+void line3d(int tileX, int tileY, int height, unsigned int tilecol)
 {
 	while (height >= 0)
 	{
@@ -68,7 +67,7 @@ void	line3d(int tileX, int tileY, int height, unsigned int tilecol)
 	}
 }
 
-void	line(float angle, int x, int y)
+void line(float angle, int x, int y)
 {
 	int i = (int)sqrt((x - player.x) * (x - player.x) + (y - player.y) * (y - player.y));
 	int x1, y1;
@@ -82,14 +81,11 @@ void	line(float angle, int x, int y)
 	}
 }
 
-
-
 //Drawing a line
-
 
 //------------------------------------------Player functions----------------------------------------
 
-int		keyPressed(int key, void *param)
+int keyPressed(int key, void *param)
 {
 	param = NULL;
 	if (key == UP_ARROW)
@@ -103,7 +99,7 @@ int		keyPressed(int key, void *param)
 	return 1;
 }
 
-int		keyReleased(int key, void *param)
+int keyReleased(int key, void *param)
 {
 	param = NULL;
 	if (key == UP_ARROW)
@@ -124,7 +120,7 @@ void render_player()
 	//line(player.rotationAngle);
 }
 
-void	init_player()
+void init_player()
 {
 	player.x = WINDOW_WIDTH2D / 2;
 	player.y = WINDOW_HEIGHT2D / 2;
@@ -135,7 +131,7 @@ void	init_player()
 	player.rotationSpeed = 1 * (M_PI / 180);
 }
 
-void	player_update()
+void player_update()
 {
 	player.rotationAngle += player.turnDirection * player.rotationSpeed;
 	int movestep = player.walkDirection * player.moveSpeed;
@@ -147,24 +143,24 @@ void	player_update()
 		player.y = y;
 	render_walls();
 	//render_player();
-//	render_grid();
+	//	render_grid();
 }
-
 
 //-------------------------------------grid functions---------------------------------------------
 
-int		grid_hasWallAt(int x, int y)
+int grid_hasWallAt(int x, int y)
 {
 	x = x / TILE_SIZE;
 	y = y / TILE_SIZE;
+	//printf("x=%d,y=%d\n",x,y);
 	if (x >= 0 && x < NUM_COLS && y >= 0 && y < NUM_ROWS)
-		return (map[y][x] == 1);
+		return (map[y][x] == '1');
 	return 1;
 }
 
-void	render_grid()
+void render_grid()
 {
-	int j,i = 0;
+	int j, i = 0;
 	int tileX;
 	int tileY;
 	unsigned int tilecol;
@@ -176,7 +172,7 @@ void	render_grid()
 		{
 			tileX = j * TILE_SIZE;
 			tileY = i * TILE_SIZE;
-			tilecol = map[i][j] == 1 ? 0 : 0xffffff;
+			tilecol = map[i][j] == '1' ? 0 : 0xffffff;
 			rect(tileX, tileY, tilecol, TILE_SIZE);
 			j++;
 		}
@@ -186,7 +182,7 @@ void	render_grid()
 
 //----------------------------------------Ray Casting Functions--------------------------------------
 
-void	render_ray()
+void render_ray()
 {
 	float yintersection, xintersection;
 	float xstep, ystep;
@@ -204,8 +200,8 @@ void	render_ray()
 
 	horWallHitX = xintersection;
 	horWallHitY = yintersection;
-	 if(ray.isRayFacingUp)
-	 	horWallHitY--;
+	if (ray.isRayFacingUp)
+		horWallHitY--;
 	while (horWallHitY >= 0 && horWallHitY < WINDOW_HEIGHT2D && horWallHitX >= 0 && horWallHitX < WINDOW_WIDTH2D)
 	{
 		if (grid_hasWallAt(horWallHitX, horWallHitY))
@@ -231,8 +227,8 @@ void	render_ray()
 
 	verWallHitX = xintersection;
 	verWallHitY = yintersection;
-	 if(ray.isRayFacingLeft)
-	 	verWallHitX--;
+	if (ray.isRayFacingLeft)
+		verWallHitX--;
 	while (verWallHitY >= 0 && verWallHitY < WINDOW_HEIGHT2D && verWallHitX >= 0 && verWallHitX < WINDOW_WIDTH2D)
 	{
 		if (grid_hasWallAt(verWallHitX, verWallHitY))
@@ -245,17 +241,17 @@ void	render_ray()
 	}
 	if (verDistance > horDistance)
 	{
-	//	line(ray.rayAngle, horWallHitX, horWallHitY);
+		//	line(ray.rayAngle, horWallHitX, horWallHitY);
 		ray.distance = horDistance;
 	}
 	else
 	{
 		ray.distance = verDistance;
-	//	line(ray.rayAngle, verWallHitX, verWallHitY);
+		//	line(ray.rayAngle, verWallHitX, verWallHitY);
 	}
 }
 
-void	init_ray(float rayAngle)
+void init_ray(float rayAngle)
 {
 	ray.rayAngle = rayAngle;
 	ray.distance = 0;
@@ -267,7 +263,7 @@ void	init_ray(float rayAngle)
 	ray.isRayFacingLeft = !ray.isRayFacingRight;
 }
 
-void	castAllRays()
+void castAllRays()
 {
 	float rayAngle = player.rotationAngle - (FOV_ANGLE / 2);
 	int i = 0;
@@ -281,7 +277,7 @@ void	castAllRays()
 	}
 }
 //----------------------------------------rendering the Walls----------------------------------------
-void	render_walls()
+void render_walls()
 {
 	int i;
 	t_rays ray;
@@ -298,42 +294,94 @@ void	render_walls()
 		if (wallStripHeight > WINDOW_HEIGHT3D)
 			wallStripHeight = WINDOW_HEIGHT3D;
 		line3d(i, 0, (WINDOW_HEIGHT3D - wallStripHeight) / 2, 0);
-		line3d(i, (WINDOW_HEIGHT3D - wallStripHeight) / 2, wallStripHeight, 0xffffff );
-		line3d(i,	(WINDOW_HEIGHT3D  + wallStripHeight) / 2, (WINDOW_HEIGHT3D - wallStripHeight) / 2,	200);
+		line3d(i, (WINDOW_HEIGHT3D - wallStripHeight) / 2, wallStripHeight, 0xffffff);
+		line3d(i, (WINDOW_HEIGHT3D + wallStripHeight) / 2, (WINDOW_HEIGHT3D - wallStripHeight) / 2, 200);
 		i++;
 	}
 }
 
-
 //----------------------------------------rendering and updating-------------------------------------
 
-int	update()
+int update()
 {
-	mlx_put_image_to_window(mlx,window,image,0,0);
+	mlx_put_image_to_window(mlx, window, image, 0, 0);
 	player_update();
 	castAllRays();
-	return (0);	
+	return (0);
 }
 
-void	render()
+void render()
 {
 	init_player();
-//	render_grid();
+	//	render_grid();
 	render_player();
 	castAllRays();
 	render_walls();
 }
 
-int main(void)
-{	
-	int a,b,c;
+void parse_map()
+{
+	int width;
+	char *line;
+	int height;
+	int fd;
+	//char **map;
+	int i;
+	fd = open("file.cub", O_RDONLY);
+	height = 1;
+	// if (fd)
+	// {
+	// 	while (get_next_line(fd, &line))
+	// 	{
+	// 		height++;
+	// 		free(line);
+	// 	}
+	// 	width = strlen(line);
+	// 	printf("x=%d, y=%d\n", width, height);
+	// 	free(line);
+	// 	close(fd);
+	// 	fd = open("file.cub", O_RDONLY);
+	// 	len = sizeof(char *) * height + sizeof(char) * width * height;
+	// 	map = (char **)malloc(len);
+	// 	ptr = (char *)(map + height);
+	// 	i = 0;
+	// 	map[height] = ptr + width * height;
+	// 	while (i++ < height)
+	// 	{
+	// 		map[i] = (ptr + width * i);
+	// 		get_next_line(fd, &map[i]);
+	// 		printf("%s\n", map[i]);
+	// 	}
+	// }
 
+	if (fd)
+	{
+		while (get_next_line(fd, &line))
+		{
+			height++;
+			free(line);
+		}
+		width = strlen(line);
+		printf("x=%d, y=%d\n", width, height);
+		free(line);
+		close(fd);
+		fd = open("file.cub", O_RDONLY);
+		map = (char **)malloc(height * sizeof(char *));
+		i = 0;
+		while (get_next_line(fd, &map[i++]));
+	}
+}
+
+int main(void)
+{
+	int a, b, c;
+	parse_map();
 	mlx = mlx_init();
-	window = mlx_new_window(mlx, WINDOW_WIDTH3D, WINDOW_HEIGHT3D, "Cub3D");	
+	window = mlx_new_window(mlx, WINDOW_WIDTH3D, WINDOW_HEIGHT3D, "Cub3D");
 	mlx_hook(window, 2, 0, keyPressed, NULL);
 	mlx_hook(window, 3, 0, keyReleased, NULL);
 	image = mlx_new_image(mlx, WINDOW_WIDTH3D, WINDOW_HEIGHT3D);
-	data = (int *)mlx_get_data_addr(image, &a,&b,&c);
+	data = (int *)mlx_get_data_addr(image, &a, &b, &c);
 	render();
 	mlx_loop_hook(mlx, update, (void *)0);
 	mlx_loop(mlx);

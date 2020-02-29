@@ -12,8 +12,7 @@
 
 #ifndef CUB_H
 # define CUB_H
-
-
+# include "get_next_line.h"
 # define NUM_ROWS (18)
 # define NUM_COLS (30)
 # define TILE_SIZE 70
@@ -32,6 +31,7 @@
 # include <math.h>
 # include <mlx.h>
 # include <unistd.h>
+# include <string.h>
 
 void    render_walls();
 void    ft_putchar(char c);
