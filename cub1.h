@@ -1,4 +1,4 @@
- char **map;//[NUM_ROWS][NUM_COLS] =
+// int map[NUM_ROWS][NUM_COLS] =
 // 	{
 // 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1},
 // 			{1,1,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
@@ -19,8 +19,9 @@
 // 			{1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1},
 // 			{1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1}
 // };
-char **map;
 
+
+char **map;
 void *image;
 int *data;
 void *window;
@@ -47,6 +48,19 @@ typedef struct s_rays {
 	int		isRayFacingLeft;
 	int		isRayFacingRight;
 }				t_rays;
+
+const int WINDOW_WIDTH3D = 2000;
+const int WINDOW_HEIGHT3D = 1200;
+
+int win_width;
+int win_height;
+char *no_texture;
+char *so_texture;
+char *we_texture;
+char *ea_texture;
+char *sprite_texture;
+int floor_color[3];
+int ceilling_color[3];
 float FOV_ANGLE = 60 * (M_PI / 180);
 t_rays rays[WINDOW_WIDTH3D];
 t_rays ray;

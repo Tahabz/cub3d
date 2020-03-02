@@ -13,13 +13,12 @@
 #ifndef CUB_H
 # define CUB_H
 # include "get_next_line.h"
-# define NUM_ROWS (18)
-# define NUM_COLS (30)
+# define NUM_ROWS (14)
+# define NUM_COLS (29)
 # define TILE_SIZE 70
 # define WINDOW_WIDTH2D TILE_SIZE * NUM_COLS
 # define WINDOW_HEIGHT2D TILE_SIZE * NUM_ROWS
-# define WINDOW_WIDTH3D 2000
-# define WINDOW_HEIGHT3D 1200
+
 # define UP_ARROW 126
 # define RIGHT_ARROW 124
 # define DOWN_ARROW 125
@@ -33,6 +32,7 @@
 # include <unistd.h>
 # include <string.h>
 
+char			**ft_split(char const *str, char c);
 void    render_walls();
 void    ft_putchar(char c);
 void	castAllRays();
@@ -41,5 +41,5 @@ void    rect(int tileX, int tileY, unsigned int tilecol, int size);
 void    render_grid();
 int		grid_hasWallAt(int x, int y);
 void	line3d(int tileX, int tileY, int height, unsigned int tilecol);
-
+void	check_map_errors();
 #endif

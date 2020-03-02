@@ -152,7 +152,6 @@ int grid_hasWallAt(int x, int y)
 {
 	x = x / TILE_SIZE;
 	y = y / TILE_SIZE;
-	//printf("x=%d,y=%d\n",x,y);
 	if (x >= 0 && x < NUM_COLS && y >= 0 && y < NUM_ROWS)
 		return (map[y][x] == '1');
 	return 1;
@@ -319,61 +318,275 @@ void render()
 	render_walls();
 }
 
-void parse_map()
+
+
+void	save_north_texture(char **texture)
 {
-	int width;
-	char *line;
-	int height;
-	int fd;
 	int i;
 
+	i = 1;
+	while (texture[i])
+		i++;
+	if (i != 2)
+		printf("There is a problem in the north texture element (number of informations is incorrect)\n");
+	no_texture = texture[1];
+	printf("%s\n", no_texture);
+}
+
+void	save_west_texture(char **texture)
+{
+	int i;
+
+	i = 1;
+	while (texture[i])
+		i++;
+	if (i != 2)
+		printf("There is a problem in the north texture element (number of informations is incorrect)\n");
+	we_texture = texture[1];
+	printf("%s\n", we_texture);
+}
+
+void	save_east_texture(char **texture)
+{
+	int i;
+
+	i = 1;
+	while (texture[i])
+		i++;
+	if (i != 2)
+		printf("There is a problem in the north texture element (number of informations is incorrect)\n");
+	ea_texture = texture[1];
+	printf("%s\n", ea_texture);
+}
+
+void	save_south_texture(char **texture)
+{
+	int i;
+
+	i = 1;
+	while (texture[i])
+		i++;
+	if (i != 2)
+		printf("There is a problem in the north texture element (number of informations is incorrect)\n");
+	so_texture = texture[1];
+	printf("%s\n", so_texture);
+}
+
+void	save_sprite_texture(char **texture)
+{
+	int i;
+
+	i = 1;
+	while (texture[i])
+		i++;
+	if (i != 2)
+		printf("There is a problem in the north texture element (number of informations is incorrect)\n");
+	sprite_texture = texture[1];
+	printf("%s\n", sprite_texture);
+}
+
+void	save_resolution(char **resolution)
+{
+	int i;
+	int j;
+
+	i = 1;
+	while (resolution[i])
+	{
+		if (i > 2)
+			printf("There is a problem in the resolution (number of informations is invalid)\n");
+		j = 0;
+		while (resolution[i][j])
+		{
+			if (resolution[i][j] < '0' || resolution[i][j] > '9')
+				printf("There is a problem in the resolution\n");
+			j++;
+		}
+		if (i == 1)
+			win_height = atoi(resolution[i]);
+		else if (i == 2)
+			win_width = atoi(resolution[i]);
+		i++;
+	}
+	printf("%d %d\n", win_height, win_width);
+}
+
+void	save_floor_color(char **element)
+{
+	int i;
+	char **floor_color_char;
+
+	i = 0;
+	while (element[i])
+		i++;
+	if (i != 2)
+		printf("A problem with the number of informations of the floor color element\n");
+	i = 0;
+	while (element[1][i])
+	{
+		if (element[1][i] != ',' && (element[1][i] < '0' || element[1][i] > '9'))
+			printf("A problem with the number of informations of the floor color element\n");
+		i++;
+	}
+	floor_color_char = ft_split(element[1], ',');
+	floor_color[0] = atoi(floor_color_char[0]);
+	floor_color[1] = atoi(floor_color_char[1]);
+	floor_color[2] = atoi(floor_color_char[2]);
+	printf("%d %d %d\n", floor_color[0], floor_color[1], floor_color[2]);
+}
+
+void	save_ceilling_color(char **element)
+{
+	int i;
+	char **floor_ceilling_char;
+
+	i = 0;
+	while (element[i])
+		i++;
+	if (i != 2)
+		printf("A problem with the number of informations of the floor color element\n");
+	i = 0;
+	while (element[1][i])
+	{
+		if (element[1][i] != ',' && (element[1][i] < '0' || element[1][i] > '9'))
+			printf("A problem with the number of informations of the floor color element\n");
+		i++;
+	}
+	floor_ceilling_char = ft_split(element[1], ',');
+	ceilling_color[0] = atoi(floor_ceilling_char[0]);
+	ceilling_color[1] = atoi(floor_ceilling_char[1]);
+	ceilling_color[2] = atoi(floor_ceilling_char[2]);
+	printf("%d %d %d\n", ceilling_color[0], ceilling_color[1], ceilling_color[2]);
+}
+
+void	check_element(char **element)
+{
+	if (strcmp(element[0], "R") == 0)
+		save_resolution(element);
+	else if (strcmp(element[0], "NO") == 0)
+		save_south_texture(element);
+	else if (strcmp(element[0], "SO") == 0)
+		save_south_texture(element);
+	else if (strcmp(element[0], "EA") == 0)
+		save_east_texture(element);
+	else if (strcmp(element[0], "WE") == 0)
+		save_west_texture(element);
+	else if (strcmp(element[0], "S") == 0)
+		save_west_texture(element);
+	else if (strcmp(element[0], "F") == 0)
+		save_floor_color(element);
+	else if (strcmp(element[0], "C") == 0)
+		save_floor_color(element);
+}
+
+char	**ft_reallocate(int i)
+{
+	char **new_map;
+	int j;
+
+	j = 0;
+	new_map = (char **)malloc((i + 1) * sizeof(char *));
+	while (j < i)
+	{
+		new_map[j] = ft_strdup(map[j]);
+		j++;
+	}
+	free(map);
+	return (new_map);
+}
+
+void 	parse_map(int fd, char *line)
+{
+	int i;
+
+	i = 1;
+	map = (char **)malloc(2 * sizeof(char *));
+	map[0] = ft_strdup(line);
+	free(line);
+	while (get_next_line(fd, &line))
+	{
+		map[i] = ft_strdup(line);
+		i += 1;
+		map = ft_reallocate(i);
+		free(line);
+	}
+	map[i] = ft_strdup(line);
+	i += 1;
+	map = ft_reallocate(i);
+	free(line);
+	map[i] = 0;
+	i = 0;
+	while (map[i])
+		printf("%s\n", map[i++]);
+	check_map_errors();
+}
+
+void	parse_file()
+{
+	//int i;
+	int fd;
+	char *line;
+	char **element;
+
 	fd = open("file.cub", O_RDONLY);
-	height = 1;
 	if (fd)
 	{
 		while (get_next_line(fd, &line))
 		{
-			height++;
+			if (*line)
+			{
+				if (*line == '1' || *line == '0')
+				{
+					parse_map(fd, line);
+					break;
+				}
+				else
+				{
+					element = ft_split(line, ' ');
+					check_element(element);
+				}
+			}
 			free(line);
 		}
-		width = strlen(line);
-		free(line);
-		close(fd);
-		fd = open("file.cub", O_RDONLY);
-		map = (char **)malloc((height + 1) * sizeof(char *));
-		i = 0;
-		while (get_next_line(fd, &map[i++]))
-		map[height] = 0;
 	}
+	else
+		printf("invalid file\n");
 }
 
 void	check_map_errors()
 {
 	int i;
+	int j;
 
-	i = 0;
-	while (map[0][i])
-		if (map[0][i++] != '1')
-			printf("ERROOOR\n");
-	i = 0;
-	while (map[NUM_ROWS - 1][i])
-		if (map[NUM_ROWS - 1][i++] != '1')
-			printf("ERROOOR\n");
 	i = 0;
 	while (map[i])
 	{
+		j = 0;
+		if (map[0][i] != '1')
+			printf("Error in row 0\n");
+		if (map[NUM_ROWS - 1][i] != '1')
+			printf("Error in last row\n");
 		if (map[i][NUM_COLS - 1] != '1')
-			printf("ERROOOR\n");
-		if (map[i++][0] != '1')
-			printf("ERROOOR\n");
+			printf("Error in last column\n");
+		if (map[i][0] != '1')
+			printf("error in first collumn\n");
+		while (map[i][j])
+		{
+			if (map[i][j] != 'N' && map[i][j] != 'S' && map[i][j] != 'E' &&
+			 	map[i][j] != 'W' && map[i][j] != '1' && map[i][j] != '0' &&
+				map[i][j] != '0' && map[i][j] != '2')
+				printf("ERROR\n");
+				j++;
+		}
+		i++;
 	}
 }
 
 int main(void)
 {
 	int a, b, c;
-	parse_map();
-	check_map_errors();
+	parse_file();
+//	check_map_errors();
 	mlx = mlx_init();
 	window = mlx_new_window(mlx, WINDOW_WIDTH3D, WINDOW_HEIGHT3D, "Cub3D");
 	mlx_hook(window, 2, 0, keyPressed, NULL);
