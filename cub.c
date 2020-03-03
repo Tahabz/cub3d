@@ -60,8 +60,8 @@ void line3d(int tileX, int tileY, int height, unsigned int tilecol)
 {
 	while (height >= 0)
 	{
-		if (tileY >= 0 && tileY < WINDOW_HEIGHT3D && tileX >= 0 && tileX < WINDOW_WIDTH3D)
-			data[(int)((tileY)*WINDOW_WIDTH3D + tileX)] = tilecol;
+		if (tileY >= 0 && tileY < win_height && tileX >= 0 && tileX < win_width)
+			data[(int)((tileY)*win_width + tileX)] = tilecol;
 		tileY++;
 		height--;
 	}
@@ -264,14 +264,15 @@ void init_ray(float rayAngle)
 
 void castAllRays()
 {
+	rays = (t_rays *)malloc(win_width * sizeof(t_rays));
 	float rayAngle = player.rotationAngle - (FOV_ANGLE / 2);
 	int i = 0;
-	while (i < WINDOW_WIDTH3D)
+	while (i < win_width)
 	{
 		init_ray(normalizeAngle(rayAngle));
 		render_ray();
 		rays[i] = ray;
-		rayAngle += (FOV_ANGLE / (WINDOW_WIDTH3D));
+		rayAngle += (FOV_ANGLE / (win_width));
 		i++;
 	}
 }
@@ -279,22 +280,21 @@ void castAllRays()
 void render_walls()
 {
 	int i;
-	t_rays ray;
 	float ray_distance;
 	float distance_proj_plane;
 	float wallStripHeight;
 	i = 0;
-	distance_proj_plane = (WINDOW_WIDTH3D / 2) / tan(FOV_ANGLE / 2);
-	while (i < WINDOW_WIDTH3D)
+	distance_proj_plane = (win_width / 2) / tan(FOV_ANGLE / 2);
+	while (i < win_width)
 	{
 		ray = rays[i];
 		ray_distance = ray.distance * cos(ray.rayAngle - player.rotationAngle);
 		wallStripHeight = (TILE_SIZE / ray_distance) * distance_proj_plane;
-		if (wallStripHeight > WINDOW_HEIGHT3D)
-			wallStripHeight = WINDOW_HEIGHT3D;
-		line3d(i, 0, (WINDOW_HEIGHT3D - wallStripHeight) / 2, 0);
-		line3d(i, (WINDOW_HEIGHT3D - wallStripHeight) / 2, wallStripHeight, 0xffffff);
-		line3d(i, (WINDOW_HEIGHT3D + wallStripHeight) / 2, (WINDOW_HEIGHT3D - wallStripHeight) / 2, 200);
+		if (wallStripHeight > win_height)
+			wallStripHeight = win_height;
+		line3d(i, 0, (win_height - wallStripHeight) / 2, 0);
+		line3d(i, (win_height - wallStripHeight) / 2, wallStripHeight, 0xffffff);
+		line3d(i, (win_height + wallStripHeight) / 2, (win_height - wallStripHeight) / 2, 200);
 		i++;
 	}
 }
@@ -403,9 +403,9 @@ void	save_resolution(char **resolution)
 			j++;
 		}
 		if (i == 1)
-			win_height = atoi(resolution[i]);
-		else if (i == 2)
 			win_width = atoi(resolution[i]);
+		else if (i == 2)
+			win_height = atoi(resolution[i]);
 		i++;
 	}
 	printf("%d %d\n", win_height, win_width);
@@ -523,7 +523,6 @@ void 	parse_map(int fd, char *line)
 
 void	parse_file()
 {
-	//int i;
 	int fd;
 	char *line;
 	char **element;
@@ -588,10 +587,10 @@ int main(void)
 	parse_file();
 //	check_map_errors();
 	mlx = mlx_init();
-	window = mlx_new_window(mlx, WINDOW_WIDTH3D, WINDOW_HEIGHT3D, "Cub3D");
+	window = mlx_new_window(mlx, win_width, win_height, "Cub3D");
 	mlx_hook(window, 2, 0, keyPressed, NULL);
 	mlx_hook(window, 3, 0, keyReleased, NULL);
-	image = mlx_new_image(mlx, WINDOW_WIDTH3D, WINDOW_HEIGHT3D);
+	image = mlx_new_image(mlx, win_width, win_height);
 	data = (int *)mlx_get_data_addr(image, &a, &b, &c);
 	render();
 	mlx_loop_hook(mlx, update, (void *)0);

@@ -62,6 +62,6 @@ char *sprite_texture;
 int floor_color[3];
 int ceilling_color[3];
 float FOV_ANGLE = 60 * (M_PI / 180);
-t_rays rays[WINDOW_WIDTH3D];
+t_rays *rays;
 t_rays ray;
 t_player player;
