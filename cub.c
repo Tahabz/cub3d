@@ -143,17 +143,29 @@ void player_update()
 		player.y = y;
 	render_walls();
 	//render_player();
-	//	render_grid();
+	//render_grid();
 }
 
 //-------------------------------------grid functions---------------------------------------------
 
 int grid_hasWallAt(int x, int y)
 {
+	int i;
+
+	i = 0;
 	x = x / TILE_SIZE;
 	y = y / TILE_SIZE;
-	if (x >= 0 && x < NUM_COLS && y >= 0 && y < NUM_ROWS)
-		return (map[y][x] == '1');
+	if (y >= 0 && y < NUM_ROWS)
+	{
+		while (map[y][i])
+			i++;
+		if (x >= 0 && x < i)
+		{
+			//printf("%d\n", map[y][x] == '1');
+			return (map[y][x] == '1');
+		}
+	}
+	//printf("x=%d y=%d\n", x, y);
 	return 1;
 }
 
@@ -164,10 +176,10 @@ void render_grid()
 	int tileY;
 	unsigned int tilecol;
 
-	while (i < NUM_ROWS)
+	while (map[i])
 	{
 		j = 0;
-		while (j < NUM_COLS)
+		while (map[i][j])
 		{
 			tileX = j * TILE_SIZE;
 			tileY = i * TILE_SIZE;
@@ -240,13 +252,13 @@ void render_ray()
 	}
 	if (verDistance > horDistance)
 	{
-		//	line(ray.rayAngle, horWallHitX, horWallHitY);
+		//line(ray.rayAngle, horWallHitX, horWallHitY);
 		ray.distance = horDistance;
 	}
 	else
 	{
 		ray.distance = verDistance;
-		//	line(ray.rayAngle, verWallHitX, verWallHitY);
+		//line(ray.rayAngle, verWallHitX, verWallHitY);
 	}
 }
 
@@ -300,24 +312,6 @@ void render_walls()
 }
 
 //----------------------------------------rendering and updating-------------------------------------
-
-int update()
-{
-	mlx_put_image_to_window(mlx, window, image, 0, 0);
-	player_update();
-	castAllRays();
-	return (0);
-}
-
-void render()
-{
-	init_player();
-	//	render_grid();
-	render_player();
-	castAllRays();
-	render_walls();
-}
-
 
 
 void	save_north_texture(char **texture)
@@ -498,22 +492,21 @@ char	**ft_reallocate(int i)
 void 	parse_map(int fd, char *line)
 {
 	int i;
+	int j;
 
+	j = 1;
 	i = 1;
 	map = (char **)malloc(2 * sizeof(char *));
 	map[0] = ft_strdup(line);
 	free(line);
-	while (get_next_line(fd, &line))
+	while (j)
 	{
+		j = get_next_line(fd, &line);
 		map[i] = ft_strdup(line);
 		i += 1;
 		map = ft_reallocate(i);
 		free(line);
 	}
-	map[i] = ft_strdup(line);
-	i += 1;
-	map = ft_reallocate(i);
-	free(line);
 	map[i] = 0;
 	i = 0;
 	while (map[i])
@@ -565,8 +558,8 @@ void	check_map_errors()
 			printf("Error in row 0\n");
 		if (map[NUM_ROWS - 1][i] != '1')
 			printf("Error in last row\n");
-		if (map[i][NUM_COLS - 1] != '1')
-			printf("Error in last column\n");
+		// if (map[i][NUM_COLS - 1] != '1')
+		// 	printf("Error in last column\n");
 		if (map[i][0] != '1')
 			printf("error in first collumn\n");
 		while (map[i][j])
@@ -576,9 +569,29 @@ void	check_map_errors()
 				map[i][j] != '0' && map[i][j] != '2')
 				printf("ERROR\n");
 				j++;
+			if (map[i][j] == '\0')
+				if (map[i][j - 1] != '1')
+					printf("Error in last column\n");
 		}
 		i++;
 	}
+}
+
+int update()
+{
+	mlx_put_image_to_window(mlx, window, image, 0, 0);
+	player_update();
+	castAllRays();
+	return (0);
+}
+
+void render()
+{
+	init_player();
+	//render_grid();
+	render_player();
+	castAllRays();
+	render_walls();
 }
 
 int main(void)

@@ -14,8 +14,8 @@
 # define CUB_H
 # include "get_next_line.h"
 # define NUM_ROWS (14)
-# define NUM_COLS (29)
-# define TILE_SIZE 70
+# define NUM_COLS (43)
+# define TILE_SIZE 60
 # define WINDOW_WIDTH2D TILE_SIZE * NUM_COLS
 # define WINDOW_HEIGHT2D TILE_SIZE * NUM_ROWS
 
