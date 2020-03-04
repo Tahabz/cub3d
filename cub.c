@@ -142,7 +142,6 @@ void player_update()
 	if (!grid_hasWallAt(player.x, y))
 		player.y = y;
 	render_walls();
-	//render_player();
 	//render_grid();
 }
 
@@ -197,7 +196,7 @@ void render_ray()
 {
 	float yintersection, xintersection;
 	float xstep, ystep;
-	float horWallHitX, horWallHitY, horDistance = 1000000000;
+	float hor_wall_hit_x, hor_wall_hit_y, horDistance = 1000000000;
 
 	//---------------CLOSEST HORIZONTAL GRID INTERSECTION------------------------
 	yintersection = floorf(player.y / TILE_SIZE) * TILE_SIZE;
@@ -209,23 +208,23 @@ void render_ray()
 	xstep *= (ray.isRayFacingLeft && xstep > 0) ? -1 : 1;
 	xstep *= (ray.isRayFacingRight && xstep < 0) ? -1 : 1;
 
-	horWallHitX = xintersection;
-	horWallHitY = yintersection;
+	hor_wall_hit_x = xintersection;
+	hor_wall_hit_y = yintersection;
 	if (ray.isRayFacingUp)
-		horWallHitY--;
-	while (horWallHitY >= 0 && horWallHitY < WINDOW_HEIGHT2D && horWallHitX >= 0 && horWallHitX < WINDOW_WIDTH2D)
+		hor_wall_hit_y--;
+	while (hor_wall_hit_y >= 0 && hor_wall_hit_y < WINDOW_HEIGHT2D && hor_wall_hit_x >= 0 && hor_wall_hit_x < WINDOW_WIDTH2D)
 	{
-		if (grid_hasWallAt(horWallHitX, horWallHitY))
+		if (grid_hasWallAt(hor_wall_hit_x, hor_wall_hit_y))
 		{
-			horDistance = distance(horWallHitX, horWallHitY);
+			horDistance = distance(hor_wall_hit_x, hor_wall_hit_y);
 			break;
 		}
-		horWallHitX += xstep;
-		horWallHitY += ystep;
+		hor_wall_hit_x += xstep;
+		hor_wall_hit_y += ystep;
 	}
 	//---------------CLOSEST ------------------------
 
-	float verWallHitX, verWallHitY, verDistance = 1000000000;
+	float verwall_hit_x, verwall_hit_y, verDistance = 1000000000;
 
 	xintersection = floorf(player.x / TILE_SIZE) * TILE_SIZE;
 	xintersection += (ray.isRayFacingRight ? TILE_SIZE : 0);
@@ -236,29 +235,31 @@ void render_ray()
 	ystep *= (ray.isRayFacingUp && ystep > 0) ? -1 : 1;
 	ystep *= (ray.isRayFacingDown && ystep < 0) ? -1 : 1;
 
-	verWallHitX = xintersection;
-	verWallHitY = yintersection;
+	verwall_hit_x = xintersection;
+	verwall_hit_y = yintersection;
 	if (ray.isRayFacingLeft)
-		verWallHitX--;
-	while (verWallHitY >= 0 && verWallHitY < WINDOW_HEIGHT2D && verWallHitX >= 0 && verWallHitX < WINDOW_WIDTH2D)
+		verwall_hit_x--;
+	while (verwall_hit_y >= 0 && verwall_hit_y < WINDOW_HEIGHT2D && verwall_hit_x >= 0 && verwall_hit_x < WINDOW_WIDTH2D)
 	{
-		if (grid_hasWallAt(verWallHitX, verWallHitY))
+		if (grid_hasWallAt(verwall_hit_x, verwall_hit_y))
 		{
-			verDistance = distance(verWallHitX, verWallHitY);
+			verDistance = distance(verwall_hit_x, verwall_hit_y);
 			break;
 		}
-		verWallHitX += xstep;
-		verWallHitY += ystep;
+		verwall_hit_x += xstep;
+		verwall_hit_y += ystep;
 	}
 	if (verDistance > horDistance)
 	{
-		//line(ray.rayAngle, horWallHitX, horWallHitY);
+		//line(ray.rayAngle, hor_wall_hit_x, hor_wall_hit_y);
+		ray.wall_hit_x = 1;
 		ray.distance = horDistance;
 	}
 	else
 	{
+		ray.wall_hit_y = 1;
 		ray.distance = verDistance;
-		//line(ray.rayAngle, verWallHitX, verWallHitY);
+		//line(ray.rayAngle, verwall_hit_x, verwall_hit_y);
 	}
 }
 
@@ -266,8 +267,8 @@ void init_ray(float rayAngle)
 {
 	ray.rayAngle = rayAngle;
 	ray.distance = 0;
-	ray.wallHitX = 0;
-	ray.wallHitY = 0;
+	ray.wall_hit_x = 0;
+	ray.wall_hit_y = 0;
 	ray.isRayFacingDown = (rayAngle > 0 && rayAngle < M_PI);
 	ray.isRayFacingUp = !ray.isRayFacingDown;
 	ray.isRayFacingRight = ((rayAngle < 0.5 * M_PI) || (rayAngle > 1.5 * M_PI));
@@ -276,10 +277,10 @@ void init_ray(float rayAngle)
 
 void castAllRays()
 {
-	rays = (t_rays *)malloc(win_width * sizeof(t_rays));
+	rays = (t_rays *)malloc(/*WINDOW_WIDTH2D*/win_width * sizeof(t_rays));
 	float rayAngle = player.rotationAngle - (FOV_ANGLE / 2);
 	int i = 0;
-	while (i < win_width)
+	while (i < /*WINDOW_WIDTH2D*/win_width)
 	{
 		init_ray(normalizeAngle(rayAngle));
 		render_ray();
@@ -294,19 +295,19 @@ void render_walls()
 	int i;
 	float ray_distance;
 	float distance_proj_plane;
-	float wallStripHeight;
+	float wall_strip_height;
 	i = 0;
 	distance_proj_plane = (win_width / 2) / tan(FOV_ANGLE / 2);
 	while (i < win_width)
 	{
 		ray = rays[i];
 		ray_distance = ray.distance * cos(ray.rayAngle - player.rotationAngle);
-		wallStripHeight = (TILE_SIZE / ray_distance) * distance_proj_plane;
-		if (wallStripHeight > win_height)
-			wallStripHeight = win_height;
-		line3d(i, 0, (win_height - wallStripHeight) / 2, 0);
-		line3d(i, (win_height - wallStripHeight) / 2, wallStripHeight, 0xffffff);
-		line3d(i, (win_height + wallStripHeight) / 2, (win_height - wallStripHeight) / 2, 200);
+		wall_strip_height = (TILE_SIZE / ray_distance) * distance_proj_plane;
+		if (wall_strip_height > win_height)
+			wall_strip_height = win_height;
+		line3d(i, 0, (win_height - wall_strip_height) / 2, 0);
+		line3d(i, (win_height - wall_strip_height) / 2, wall_strip_height, ray.wall_hit_x ? 0xffffff : 0xD3D3D3);
+		line3d(i, (win_height + wall_strip_height) / 2, (win_height - wall_strip_height) / 2, 200);
 		i++;
 	}
 }
@@ -612,10 +613,10 @@ int update()
 void render()
 {
 	init_player();
-	//render_grid();
+	render_grid();
 	render_player();
 	castAllRays();
-	render_walls();
+	//render_walls();
 }
 
 int main(void)

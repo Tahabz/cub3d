@@ -40,8 +40,8 @@ typedef struct s_player {
 
 typedef struct s_rays {
 	float 	rayAngle;
-	float	wallHitX;
-	float	wallHitY;
+	float	wall_hit_x;
+	float	wall_hit_y;
 	float	distance;
 	int		isRayFacingDown;
 	int		isRayFacingUp;
