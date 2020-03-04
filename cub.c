@@ -519,6 +519,7 @@ void	parse_file()
 	int fd;
 	char *line;
 	char **element;
+	int i;
 
 	fd = open("file.cub", O_RDONLY);
 	if (fd)
@@ -527,7 +528,10 @@ void	parse_file()
 		{
 			if (*line)
 			{
-				if (*line == '1' || *line == '0')
+				i = 0;
+				while (line[i] == ' ')
+					i++;
+				if (line[i] == '1' || line[i] == '0')
 				{
 					parse_map(fd, line);
 					break;
@@ -555,18 +559,38 @@ void	check_map_errors()
 	{
 		j = 0;
 		if (map[0][i] != '1')
-			printf("Error in row 0\n");
+		{
+		 	if (map[0][i] == ' ')
+			{
+			 	if (map[1][i] == '0')
+				 	printf("Error in row 0\n");
+			}
+			else
+				printf("Error in row 0\n");
+		}		
 		if (map[NUM_ROWS - 1][i] != '1')
-			printf("Error in last row\n");
-		// if (map[i][NUM_COLS - 1] != '1')
-		// 	printf("Error in last column\n");
-		if (map[i][0] != '1')
-			printf("error in first collumn\n");
+		{
+			if (map[NUM_ROWS - 1][i] == ' ')
+			{
+				if (map[NUM_ROWS - 2][i] == '0')
+					printf("Error in last row\n");
+			}
+			else
+				printf("Error in last row\n");
+		}
+		//if (map[i][0] != '1')
+		//	printf("error in first collumn\n");
 		while (map[i][j])
 		{
+			if (map[i][j] == ' ')
+			{
+				if (j > 0 && i > 0 && map[i][j + 1] && i < NUM_ROWS - 1)
+					if (map[i][j + 1] == '0' || map[i][j - 1] == '0' || map[i + 1][j] == '0' || map[i - 1][j] == '0')
+						printf("ERROR MAP SPACE i = %d j = %d\n", i, j);
+			}
 			if (map[i][j] != 'N' && map[i][j] != 'S' && map[i][j] != 'E' &&
 			 	map[i][j] != 'W' && map[i][j] != '1' && map[i][j] != '0' &&
-				map[i][j] != '0' && map[i][j] != '2')
+				map[i][j] != '0' && map[i][j] != '2' && map[i][j] != ' ')
 				printf("ERROR\n");
 				j++;
 			if (map[i][j] == '\0')
