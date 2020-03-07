@@ -320,8 +320,8 @@ void	save_north_texture(char **texture)
 		i++;
 	if (i != 2)
 		printf("There is a problem in the north texture element (number of informations is incorrect)\n");
-	no_texture = texture[1];
-	printf("%s\n", no_texture);
+	no_image.texture = texture[1];
+	printf("%s\n", no_image.texture);
 }
 
 void	save_west_texture(char **texture)
@@ -333,8 +333,8 @@ void	save_west_texture(char **texture)
 		i++;
 	if (i != 2)
 		printf("There is a problem in the north texture element (number of informations is incorrect)\n");
-	we_texture = texture[1];
-	printf("%s\n", we_texture);
+	we_image.texture = texture[1];
+	printf("%s\n", we_image.texture);
 }
 
 void	save_east_texture(char **texture)
@@ -346,8 +346,8 @@ void	save_east_texture(char **texture)
 		i++;
 	if (i != 2)
 		printf("There is a problem in the north texture element (number of informations is incorrect)\n");
-	ea_texture = texture[1];
-	printf("%s\n", ea_texture);
+	ea_image.texture = texture[1];
+	printf("%s\n", ea_image.texture);
 }
 
 void	save_south_texture(char **texture)
@@ -359,8 +359,8 @@ void	save_south_texture(char **texture)
 		i++;
 	if (i != 2)
 		printf("There is a problem in the north texture element (number of informations is incorrect)\n");
-	so_texture = texture[1];
-	printf("%s\n", so_texture);
+	so_image.texture = texture[1];
+	printf("%s\n", so_image.texture);
 }
 
 void	save_sprite_texture(char **texture)
@@ -455,7 +455,7 @@ void	check_element(char **element)
 	if (strcmp(element[0], "R") == 0)
 		save_resolution(element);
 	else if (strcmp(element[0], "NO") == 0)
-		save_south_texture(element);
+		save_north_texture(element);
 	else if (strcmp(element[0], "SO") == 0)
 		save_south_texture(element);
 	else if (strcmp(element[0], "EA") == 0)
@@ -463,11 +463,11 @@ void	check_element(char **element)
 	else if (strcmp(element[0], "WE") == 0)
 		save_west_texture(element);
 	else if (strcmp(element[0], "S") == 0)
-		save_west_texture(element);
+		save_sprite_texture(element);
 	else if (strcmp(element[0], "F") == 0)
 		save_floor_color(element);
 	else if (strcmp(element[0], "C") == 0)
-		save_floor_color(element);
+		save_ceilling_color(element);
 }
 
 char	**ft_reallocate(int i)
@@ -612,6 +612,19 @@ void	check_map_errors()
 	}
 }
 
+void	get_image()
+{
+	no_image.image = (int *)mlx_xpm_file_to_image(mlx, no_image.texture, &(no_image.width), &(no_image.height));
+	printf("%d\n", no_image.height);
+	// no_image.data = mlx_get_data_addr(mlx, &no_image.bpp, &no_image.sl, &no_image.end);
+	// ea_image.image = mlx_xpm_file_to_image(mlx, ea_image.texture, &(ea_image.width), &(ea_image.height));
+	// ea_image.data = mlx_get_data_addr(mlx, &ea_image.bpp, &ea_image.sl, &ea_image.end);
+	// so_image.image = mlx_xpm_file_to_image(mlx, so_image.texture, &(so_image.width), &(so_image.height));
+	// so_image.data = mlx_get_data_addr(mlx, &so_image.bpp, &so_image.sl, &so_image.end);
+	// we_image.image = mlx_xpm_file_to_image(mlx, we_image.texture, &(we_image.width), &(we_image.height));
+	// we_image.data = mlx_get_data_addr(mlx, &we_image.bpp, &we_image.sl, &we_image.end);  
+}
+
 int update()
 {
 	mlx_put_image_to_window(mlx, window, image, 0, 0);
@@ -640,6 +653,7 @@ int main(void)
 	mlx_hook(window, 3, 0, keyReleased, NULL);
 	image = mlx_new_image(mlx, win_width, win_height);
 	data = (int *)mlx_get_data_addr(image, &a, &b, &c);
+	get_image();
 	render();
 	mlx_loop_hook(mlx, update, (void *)0);
 	mlx_loop(mlx);
