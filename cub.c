@@ -203,18 +203,16 @@ void render_ray()
 	yintersection += (ray.isRayFacingDown ? TILE_SIZE : 0);
 	xintersection = player.x + (yintersection - player.y) / tan(ray.rayAngle);
 	ystep = TILE_SIZE;
-	ystep *= (ray.isRayFacingUp ? -1 : 1);
+	ystep *= (ray.isRayFacingUp ? - 1 : 1);
 	xstep = TILE_SIZE / tan(ray.rayAngle);
 	xstep *= (ray.isRayFacingLeft && xstep > 0) ? -1 : 1;
 	xstep *= (ray.isRayFacingRight && xstep < 0) ? -1 : 1;
 
 	hor_wall_hit_x = xintersection;
 	hor_wall_hit_y = yintersection;
-	if (ray.isRayFacingUp)
-		hor_wall_hit_y--;
 	while (hor_wall_hit_y >= 0 && hor_wall_hit_y < WINDOW_HEIGHT2D && hor_wall_hit_x >= 0 && hor_wall_hit_x < WINDOW_WIDTH2D)
 	{
-		if (grid_hasWallAt(hor_wall_hit_x, hor_wall_hit_y))
+		if (grid_hasWallAt(hor_wall_hit_x, ray.isRayFacingUp ? hor_wall_hit_y - 1: hor_wall_hit_y))
 		{
 			horDistance = distance(hor_wall_hit_x, hor_wall_hit_y);
 			break;
@@ -224,7 +222,7 @@ void render_ray()
 	}
 	//---------------CLOSEST ------------------------
 
-	float verwall_hit_x, verwall_hit_y, verDistance = 1000000000;
+	float ver_wall_hit_x, verwall_hit_y, verDistance = 1000000000;
 
 	xintersection = floorf(player.x / TILE_SIZE) * TILE_SIZE;
 	xintersection += (ray.isRayFacingRight ? TILE_SIZE : 0);
@@ -235,23 +233,21 @@ void render_ray()
 	ystep *= (ray.isRayFacingUp && ystep > 0) ? -1 : 1;
 	ystep *= (ray.isRayFacingDown && ystep < 0) ? -1 : 1;
 
-	verwall_hit_x = xintersection;
+	ver_wall_hit_x = xintersection;
 	verwall_hit_y = yintersection;
-	if (ray.isRayFacingLeft)
-		verwall_hit_x--;
-	while (verwall_hit_y >= 0 && verwall_hit_y < WINDOW_HEIGHT2D && verwall_hit_x >= 0 && verwall_hit_x < WINDOW_WIDTH2D)
+	while (verwall_hit_y >= 0 && verwall_hit_y < WINDOW_HEIGHT2D && ver_wall_hit_x >= 0 && ver_wall_hit_x < WINDOW_WIDTH2D)
 	{
-		if (grid_hasWallAt(verwall_hit_x, verwall_hit_y))
+		if (grid_hasWallAt(ray.isRayFacingLeft ? ver_wall_hit_x -1 : ver_wall_hit_x , verwall_hit_y))
 		{
-			verDistance = distance(verwall_hit_x, verwall_hit_y);
+			verDistance = distance(ver_wall_hit_x, verwall_hit_y);
 			break;
 		}
-		verwall_hit_x += xstep;
+		ver_wall_hit_x += xstep;
 		verwall_hit_y += ystep;
 	}
 	if (verDistance > horDistance)
 	{
-		//line(ray.rayAngle, hor_wall_hit_x, hor_wall_hit_y);
+	//	line(ray.rayAngle, hor_wall_hit_x, hor_wall_hit_y);
 		ray.wall_hit_x = 1;
 		ray.distance = horDistance;
 	}
@@ -259,7 +255,7 @@ void render_ray()
 	{
 		ray.wall_hit_y = 1;
 		ray.distance = verDistance;
-		//line(ray.rayAngle, verwall_hit_x, verwall_hit_y);
+	//	line(ray.rayAngle, ver_wall_hit_x, verwall_hit_y);
 	}
 }
 
@@ -554,7 +550,9 @@ void	check_map_errors()
 {
 	int i;
 	int j;
+	int t;
 
+	t = 0;
 	i = 0;
 	while (map[i])
 	{
@@ -574,29 +572,41 @@ void	check_map_errors()
 			if (map[NUM_ROWS - 1][i] == ' ')
 			{
 				if (map[NUM_ROWS - 2][i] == '0')
-					printf("Error in last row\n");
+					printf("Error in last row i=%d j=%d\n", i, j);
 			}
 			else
-				printf("Error in last row\n");
+				printf("Error in last row i=%d j=%d\n", i, j);
 		}
-		//if (map[i][0] != '1')
-		//	printf("error in first collumn\n");
+		if (map[i][0] != '1' && map[i][0] != ' ')
+			printf("error in first collumn\n");
 		while (map[i][j])
 		{
+			if (map[i][j + 1] == '\0')
+			{
+				t = j;
+				if (map[i][j] != '1')
+					printf("Error in last column\n");
+			}
 			if (map[i][j] == ' ')
 			{
-				if (j > 0 && i > 0 && map[i][j + 1] && i < NUM_ROWS - 1)
-					if (map[i][j + 1] == '0' || map[i][j - 1] == '0' || map[i + 1][j] == '0' || map[i - 1][j] == '0')
-						printf("ERROR MAP SPACE i = %d j = %d\n", i, j);
+				printf("i = %d, j = %d\n", i, j);
+				if (j <= t && map[i][j + 1])		
+					if (j > 0 && i > 0 && i < NUM_ROWS - 1)
+						if (map[i][j + 1] == '0' || map[i][j - 1] == '0' || map[i + 1][j] == '0' || map[i - 1][j] == '0')
+							printf("ERROR MAP SPACE i = %d j = %d\n", i, j);
+			}
+			if (map[i][j] == '0')
+			{
+				if (j > t && t != 0)
+					printf("ERROR LOL i = %d j = %d\n", i, j);
+				else if (map[i - 1][j] == ' ')
+					printf("ERROR LOL i = %d j = %d\n", i, j);
 			}
 			if (map[i][j] != 'N' && map[i][j] != 'S' && map[i][j] != 'E' &&
 			 	map[i][j] != 'W' && map[i][j] != '1' && map[i][j] != '0' &&
 				map[i][j] != '0' && map[i][j] != '2' && map[i][j] != ' ')
 				printf("ERROR\n");
 				j++;
-			if (map[i][j] == '\0')
-				if (map[i][j - 1] != '1')
-					printf("Error in last column\n");
 		}
 		i++;
 	}
@@ -613,10 +623,10 @@ int update()
 void render()
 {
 	init_player();
-	render_grid();
+	//render_grid();
 	render_player();
 	castAllRays();
-	//render_walls();
+	render_walls();
 }
 
 int main(void)
