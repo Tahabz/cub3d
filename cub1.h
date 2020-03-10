@@ -29,29 +29,30 @@ void *mlx;
 
 
 typedef struct s_player {
-	float	x;
-	float	y;
+	double	x;
+	double	y;
 	int		turnDirection;
 	int		walkDirection;
-	float	rotationAngle;
-	float	rotationSpeed;
+	double	rotationAngle;
+	double	rotationSpeed;
 	int		moveSpeed;
 }				t_player;
 
 typedef struct s_rays {
-	float 	rayAngle;
-	float	wall_hit_x;
-	float	wall_hit_y;
-	float	distance;
+	double 	rayAngle;
+	double	wall_hit_x;
+	double	wall_hit_y;
+	double	distance;
 	int		isRayFacingDown;
 	int		isRayFacingUp;
 	int		isRayFacingLeft;
 	int		isRayFacingRight;
+	int		hit_vert;
 }				t_rays;
 
 typedef struct s_image {
 	int *data;
-	int *image;
+	void *image;
 	int width;
 	int height;
 	int	bpp;
@@ -69,7 +70,7 @@ int win_height;
 
 int floor_color[3];
 int ceilling_color[3];
-float FOV_ANGLE = 60 * (M_PI / 180);
+double FOV_ANGLE = 60 * (M_PI / 180);
 
 t_image no_image;
 t_image we_image;

@@ -13,12 +13,11 @@
 #ifndef CUB_H
 # define CUB_H
 # include "get_next_line.h"
-# define NUM_ROWS (15)
-# define NUM_COLS (45)
-# define TILE_SIZE 60
+# define NUM_ROWS (19)
+# define NUM_COLS (80)
+# define TILE_SIZE 200
 # define WINDOW_WIDTH2D TILE_SIZE * NUM_COLS
 # define WINDOW_HEIGHT2D TILE_SIZE * NUM_ROWS
-
 # define UP_ARROW 126
 # define RIGHT_ARROW 124
 # define DOWN_ARROW 125

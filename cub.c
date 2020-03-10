@@ -17,10 +17,10 @@
 /**
 * normalizeAngle
 * @brief Normalizes the angle
-* @param angle a float variable takes the angle
+* @param angle a double variable takes the angle
 * @return returns the normalized angle
 */
-float normalizeAngle(float angle)
+double normalizeAngle(double angle)
 {
 	angle = remainder(angle, (2 * M_PI));
 	if (angle < 0)
@@ -29,7 +29,7 @@ float normalizeAngle(float angle)
 }
 
 //Distance Between two points
-float distance(float x, float y)
+double distance(double x, double y)
 {
 	return (sqrt((x - player.x) * (x - player.x) + (y - player.y) * (y - player.y)));
 }
@@ -38,8 +38,8 @@ void rect(int tileX, int tileY, unsigned int tilecol, int size)
 {
 	int a = size;
 	int b = size;
-	float tempx = tileX;
-	float tempy = tileY;
+	double tempx = tileX;
+	double tempy = tileY;
 
 	while (a)
 	{
@@ -67,14 +67,48 @@ void line3d(int tileX, int tileY, int height, unsigned int tilecol)
 	}
 }
 
-void line(float angle, int x, int y)
+void	line3d_walls(int w_top, int w_bottom, int wall_height, int index)
+{
+	int j;
+	int offset_x;
+	int offset_y;
+	int	color;
+
+	if (rays[index].hit_vert)
+		offset_x = (int)rays[index].wall_hit_y % TILE_SIZE;
+	else
+		offset_x = (int)rays[index].wall_hit_x % TILE_SIZE;
+	j = w_top;
+	while (j < w_bottom)
+	{
+		offset_y = (j + ((wall_height / 2) - (win_height / 2))) *
+			((double)we_image.height / (double)wall_height);
+		offset_y = offset_y < 0 ? 0 : offset_y;
+		if (rays[index].hit_vert && rays[index].isRayFacingLeft)
+			color = we_image.data[(offset_y * we_image.height) + offset_x];
+		else if (rays[index].hit_vert && rays[index].isRayFacingRight)
+			color = ea_image.data[(offset_y * ea_image.height) + offset_x];
+		else if (!rays[index].hit_vert && rays[index].isRayFacingUp)
+			color = no_image.data[(offset_y * no_image.height) + offset_x];
+		else if (!rays[index].hit_vert && rays[index].isRayFacingDown)
+		{
+		//	printf("%d\n", offset_y);
+			color = so_image.data[(offset_y * so_image.height) + offset_x];
+		}
+		//color = 0xFFFFFF;
+		data[(j * win_width) + index] = color;
+		j++;
+	}
+}
+
+void line(double angle, int x, int y)
 {
 	int i = (int)sqrt((x - player.x) * (x - player.x) + (y - player.y) * (y - player.y));
 	int x1, y1;
 	while (i)
 	{
-		x1 = (int)(player.x + cos(angle) * i);
-		y1 = (int)(player.y + sin(angle) * i);
+		x1 = (int)(player.x + cosf(angle) * i);
+		y1 = (int)(player.y + sinf(angle) * i);
 		if (y1 >= 0 && y1 < WINDOW_HEIGHT2D && x1 >= 0 && x1 < WINDOW_WIDTH2D)
 			data[(y1)*WINDOW_WIDTH2D + x1] = 200;
 		i--;
@@ -122,12 +156,9 @@ void render_player()
 
 void init_player()
 {
-	player.x = WINDOW_WIDTH2D / 2;
-	player.y = WINDOW_HEIGHT2D / 2;
 	player.turnDirection = 0;
 	player.walkDirection = 0;
-	player.rotationAngle = M_PI / 2;
-	player.moveSpeed = 5.0;
+	player.moveSpeed = 30;
 	player.rotationSpeed = 1 * (M_PI / 180);
 }
 
@@ -135,8 +166,8 @@ void player_update()
 {
 	player.rotationAngle += player.turnDirection * player.rotationSpeed;
 	int movestep = player.walkDirection * player.moveSpeed;
-	float x = player.x + cos(player.rotationAngle) * movestep;
-	float y = player.y + sin(player.rotationAngle) * movestep;
+	double x = player.x + cosf(player.rotationAngle) * movestep;
+	double y = player.y + sinf(player.rotationAngle) * movestep;
 	if (!grid_hasWallAt(x, player.y))
 		player.x = x;
 	if (!grid_hasWallAt(player.x, y))
@@ -194,17 +225,17 @@ void render_grid()
 
 void render_ray()
 {
-	float yintersection, xintersection;
-	float xstep, ystep;
-	float hor_wall_hit_x, hor_wall_hit_y, horDistance = 1000000000;
+	double yintersection, xintersection;
+	double xstep, ystep;
+	double hor_wall_hit_x, hor_wall_hit_y, horDistance = 10000000000;
 
 	//---------------CLOSEST HORIZONTAL GRID INTERSECTION------------------------
 	yintersection = floorf(player.y / TILE_SIZE) * TILE_SIZE;
 	yintersection += (ray.isRayFacingDown ? TILE_SIZE : 0);
-	xintersection = player.x + (yintersection - player.y) / tan(ray.rayAngle);
+	xintersection = player.x + (yintersection - player.y) / tanf(ray.rayAngle);
 	ystep = TILE_SIZE;
 	ystep *= (ray.isRayFacingUp ? - 1 : 1);
-	xstep = TILE_SIZE / tan(ray.rayAngle);
+	xstep = TILE_SIZE / tanf(ray.rayAngle);
 	xstep *= (ray.isRayFacingLeft && xstep > 0) ? -1 : 1;
 	xstep *= (ray.isRayFacingRight && xstep < 0) ? -1 : 1;
 
@@ -222,14 +253,14 @@ void render_ray()
 	}
 	//---------------CLOSEST ------------------------
 
-	float ver_wall_hit_x, verwall_hit_y, verDistance = 1000000000;
+	double ver_wall_hit_x, verwall_hit_y, verDistance = 1000000000;
 
 	xintersection = floorf(player.x / TILE_SIZE) * TILE_SIZE;
 	xintersection += (ray.isRayFacingRight ? TILE_SIZE : 0);
-	yintersection = player.y + (xintersection - player.x) * tan(ray.rayAngle);
+	yintersection = player.y + (xintersection - player.x) * tanf(ray.rayAngle);
 	xstep = TILE_SIZE;
 	xstep *= (ray.isRayFacingLeft ? -1 : 1);
-	ystep = TILE_SIZE * tan(ray.rayAngle);
+	ystep = TILE_SIZE * tanf(ray.rayAngle);
 	ystep *= (ray.isRayFacingUp && ystep > 0) ? -1 : 1;
 	ystep *= (ray.isRayFacingDown && ystep < 0) ? -1 : 1;
 
@@ -245,21 +276,25 @@ void render_ray()
 		ver_wall_hit_x += xstep;
 		verwall_hit_y += ystep;
 	}
-	if (verDistance > horDistance)
+	if (verDistance < horDistance)
 	{
 	//	line(ray.rayAngle, hor_wall_hit_x, hor_wall_hit_y);
-		ray.wall_hit_x = 1;
-		ray.distance = horDistance;
+		ray.hit_vert = 1;
+		ray.wall_hit_x = ver_wall_hit_x;
+		ray.wall_hit_y = verwall_hit_y;
+		ray.distance = verDistance;
 	}
 	else
 	{
-		ray.wall_hit_y = 1;
-		ray.distance = verDistance;
+		ray.hit_vert = 0;
+		ray.wall_hit_x = hor_wall_hit_x;
+		ray.wall_hit_y = hor_wall_hit_y;
+		ray.distance = horDistance;
 	//	line(ray.rayAngle, ver_wall_hit_x, verwall_hit_y);
 	}
 }
 
-void init_ray(float rayAngle)
+void init_ray(double rayAngle)
 {
 	ray.rayAngle = rayAngle;
 	ray.distance = 0;
@@ -274,7 +309,7 @@ void init_ray(float rayAngle)
 void castAllRays()
 {
 	rays = (t_rays *)malloc(/*WINDOW_WIDTH2D*/win_width * sizeof(t_rays));
-	float rayAngle = player.rotationAngle - (FOV_ANGLE / 2);
+	double rayAngle = player.rotationAngle - (FOV_ANGLE / 2);
 	int i = 0;
 	while (i < /*WINDOW_WIDTH2D*/win_width)
 	{
@@ -289,23 +324,35 @@ void castAllRays()
 void render_walls()
 {
 	int i;
-	float ray_distance;
-	float distance_proj_plane;
-	float wall_strip_height;
+	double ray_distance;
+	double distance_proj_plane;
+	double wall_strip_height;
+	double walltop, wallbottom;
+	int j;
+
 	i = 0;
-	distance_proj_plane = (win_width / 2) / tan(FOV_ANGLE / 2);
+	distance_proj_plane = (win_width / 2) / tanf(FOV_ANGLE / 2);
 	while (i < win_width)
 	{
-		ray = rays[i];
-		ray_distance = ray.distance * cos(ray.rayAngle - player.rotationAngle);
-		wall_strip_height = (TILE_SIZE / ray_distance) * distance_proj_plane;
-		if (wall_strip_height > win_height)
-			wall_strip_height = win_height;
-		line3d(i, 0, (win_height - wall_strip_height) / 2, 0);
-		line3d(i, (win_height - wall_strip_height) / 2, wall_strip_height, ray.wall_hit_x ? 0xffffff : 0xD3D3D3);
-		line3d(i, (win_height + wall_strip_height) / 2, (win_height - wall_strip_height) / 2, 200);
-		i++;
+		j = 0;
+		ray_distance = rays[i].distance * cosf(rays[i].rayAngle - player.rotationAngle);
+		wall_strip_height = ((double)TILE_SIZE / ray_distance) * (double)distance_proj_plane;
+		walltop = ((double)win_height / 2) - (wall_strip_height / 2);
+		walltop = walltop < 0 ? 0 : walltop;
+		wallbottom = ((double)win_height / 2) + (wall_strip_height / 2);
+		wallbottom = wallbottom > win_height ? win_height : wallbottom;
+		while (j < walltop)
+			data[(j++ * win_width) + i] = 0;
+		j = wallbottom;
+		while (j < win_height)
+			data[(j++ * win_width) + i] = 200;
+		line3d_walls(walltop, wallbottom, wall_strip_height, i);
+	//	j = walltop;
+		// while (j < wallbottom)
+		// 	data[(j++ * win_width) + i] = 20000;
+		++i;
 	}
+	mlx_put_image_to_window(mlx, window, image, 0, 0);
 }
 
 //----------------------------------------rendering and updating-------------------------------------
@@ -551,9 +598,33 @@ void	check_map_errors()
 	int i;
 	int j;
 	int t;
+	int r;
 
+	r = 0;
 	t = 0;
 	i = 0;
+	while (map[r])
+	{
+		j = 0;
+		while (map[r][j])
+		{
+			if (map[r][j] == 'N' || map[r][j] == 'W' || map[r][j] == 'E' || map[r][j] == 'S')
+			{
+				player.x = j * 200 + 100; /*WINDOW_WIDTH2D / 2.5 - 200;*/
+				player.y = r * 200 + 100;/*WINDOW_HEIGHT2D / 2.5 + 90;*/
+				if (map[r][j] == 'N')
+					player.rotationAngle = (3  * M_PI) / 2;
+				else if (map[r][j] == 'S')
+					player.rotationAngle = M_PI / 2;
+				else if (map[r][j] == 'E')
+					player.rotationAngle = 0;
+				else if (map[r][j] == 'W')
+					player.rotationAngle = M_PI;
+			}
+			j++;
+		}
+		r++;
+	}
 	while (map[i])
 	{
 		j = 0;
@@ -567,11 +638,11 @@ void	check_map_errors()
 			else
 				printf("Error in row 0\n");
 		}		
-		if (map[NUM_ROWS - 1][i] != '1')
+		if (map[r - 1][i] != '1')
 		{
-			if (map[NUM_ROWS - 1][i] == ' ')
+			if (map[r - 1][i] == ' ')
 			{
-				if (map[NUM_ROWS - 2][i] == '0')
+				if (map[r - 2][i] == '0')
 					printf("Error in last row i=%d j=%d\n", i, j);
 			}
 			else
@@ -589,9 +660,8 @@ void	check_map_errors()
 			}
 			if (map[i][j] == ' ')
 			{
-				printf("i = %d, j = %d\n", i, j);
 				if (j <= t && map[i][j + 1])		
-					if (j > 0 && i > 0 && i < NUM_ROWS - 1)
+					if (j > 0 && i > 0 && i < r - 1)
 						if (map[i][j + 1] == '0' || map[i][j - 1] == '0' || map[i + 1][j] == '0' || map[i - 1][j] == '0')
 							printf("ERROR MAP SPACE i = %d j = %d\n", i, j);
 			}
@@ -614,22 +684,21 @@ void	check_map_errors()
 
 void	get_image()
 {
-	no_image.image = (int *)mlx_xpm_file_to_image(mlx, no_image.texture, &(no_image.width), &(no_image.height));
-	printf("%d\n", no_image.height);
-	// no_image.data = mlx_get_data_addr(mlx, &no_image.bpp, &no_image.sl, &no_image.end);
-	// ea_image.image = mlx_xpm_file_to_image(mlx, ea_image.texture, &(ea_image.width), &(ea_image.height));
-	// ea_image.data = mlx_get_data_addr(mlx, &ea_image.bpp, &ea_image.sl, &ea_image.end);
-	// so_image.image = mlx_xpm_file_to_image(mlx, so_image.texture, &(so_image.width), &(so_image.height));
-	// so_image.data = mlx_get_data_addr(mlx, &so_image.bpp, &so_image.sl, &so_image.end);
-	// we_image.image = mlx_xpm_file_to_image(mlx, we_image.texture, &(we_image.width), &(we_image.height));
-	// we_image.data = mlx_get_data_addr(mlx, &we_image.bpp, &we_image.sl, &we_image.end);  
+	no_image.image = mlx_xpm_file_to_image(mlx, no_image.texture, &(no_image.width), &(no_image.height));
+	no_image.data = (int *)mlx_get_data_addr(no_image.image, &no_image.bpp, &no_image.sl, &no_image.end);
+	ea_image.image = mlx_xpm_file_to_image(mlx, ea_image.texture, &(ea_image.width), &(ea_image.height));
+	ea_image.data = (int *)mlx_get_data_addr(ea_image.image, &ea_image.bpp, &ea_image.sl, &ea_image.end);
+	so_image.image = mlx_xpm_file_to_image(mlx, so_image.texture, &(so_image.width), &(so_image.height));
+	so_image.data = (int *)mlx_get_data_addr(so_image.image, &so_image.bpp, &so_image.sl, &so_image.end);
+	we_image.image = mlx_xpm_file_to_image(mlx, we_image.texture, &(we_image.width), &(we_image.height));
+	we_image.data = (int *)mlx_get_data_addr(we_image.image, &we_image.bpp, &we_image.sl, &we_image.end);  
 }
 
 int update()
 {
-	mlx_put_image_to_window(mlx, window, image, 0, 0);
-	player_update();
+	
 	castAllRays();
+	player_update();
 	return (0);
 }
 
