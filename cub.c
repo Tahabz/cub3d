@@ -122,13 +122,21 @@ void line(double angle, int x, int y)
 int keyPressed(int key, void *param)
 {
 	param = NULL;
-	if (key == UP_ARROW)
+	// if (key == UP_ARROW)
+	// 	player.walkDirection = +1;
+	// else if (key == DOWN_ARROW)
+	// 	player.walkDirection = -1;
+	// else if (key == LEFT_ARROW)
+	// 	player.turnDirection = -1;
+	// else if (key == RIGHT_ARROW)
+	// 	player.turnDirection = +1;
+	if (key == K_Z)
 		player.walkDirection = +1;
-	else if (key == DOWN_ARROW)
+	else if (key == K_S)
 		player.walkDirection = -1;
-	else if (key == LEFT_ARROW)
+	else if (key == K_Q)
 		player.turnDirection = -1;
-	else if (key == RIGHT_ARROW)
+	else if (key == K_D)
 		player.turnDirection = +1;
 	return 1;
 }
@@ -136,13 +144,21 @@ int keyPressed(int key, void *param)
 int keyReleased(int key, void *param)
 {
 	param = NULL;
-	if (key == UP_ARROW)
+	// if (key == UP_ARROW)
+	// 	player.walkDirection = 0;
+	// else if (key == DOWN_ARROW)
+	// 	player.walkDirection = 0;
+	// if (key == LEFT_ARROW)
+	// 	player.turnDirection = 0;
+	// else if (key == RIGHT_ARROW)
+	// 	player.turnDirection = 0;
+		if (key == K_Z)
 		player.walkDirection = 0;
-	else if (key == DOWN_ARROW)
+	else if (key == K_S)
 		player.walkDirection = 0;
-	if (key == LEFT_ARROW)
+	else if (key == K_Q)
 		player.turnDirection = 0;
-	else if (key == RIGHT_ARROW)
+	else if (key == K_D)
 		player.turnDirection = 0;
 	return 0;
 }
@@ -158,7 +174,7 @@ void init_player()
 {
 	player.turnDirection = 0;
 	player.walkDirection = 0;
-	player.moveSpeed = 30;
+	player.moveSpeed = 5;
 	player.rotationSpeed = 1 * (M_PI / 180);
 }
 
@@ -715,11 +731,11 @@ int main(void)
 {
 	int a, b, c;
 	parse_file();
-//	check_map_errors();
+	check_map_errors();
 	mlx = mlx_init();
 	window = mlx_new_window(mlx, win_width, win_height, "Cub3D");
-	mlx_hook(window, 2, 0, keyPressed, NULL);
-	mlx_hook(window, 3, 0, keyReleased, NULL);
+	mlx_hook(window, 2, (1L<<0), keyPressed, NULL);
+	mlx_hook(window, 3, (1L<<1), keyReleased, NULL);
 	image = mlx_new_image(mlx, win_width, win_height);
 	data = (int *)mlx_get_data_addr(image, &a, &b, &c);
 	get_image();
