@@ -30,15 +30,42 @@
 # include <mlx.h>
 # include <unistd.h>
 # include <string.h>
+# include <fcntl.h>
 
-char			**ft_split(char const *str, char c);
+char	**ft_split(char const *str, char c);
+double  normalizeAngle(double angle);
 void    render_walls();
 void    ft_putchar(char c);
 void	castAllRays();
 void    ft_putnbr(int n);
 void    rect(int tileX, int tileY, unsigned int tilecol, int size);
 void    render_grid();
-int		grid_hasWallAt(int x, int y);
+int		grid_has_wall_at(int x, int y);
 void	line3d(int tileX, int tileY, int height, unsigned int tilecol);
 void	check_map_errors();
+double  distance(double x, double y);
+void	render_sprite();
+int     grid_has_sprite_at(int x, int y);
+void	add_sprite();
+void	parse_file();
+void 	parse_map(int fd, char *line);
+void	save_floor_color(char **element);
+void	save_ceilling_color(char **element);
+void	check_element(char **element);
+void	save_sprite_texture(char **texture);
+void	save_south_texture(char **texture);
+void	save_east_texture(char **texture);
+void	save_west_texture(char **texture);
+void	save_north_texture(char **texture);
+void	save_resolution(char **resolution);
+void	get_image();
+void	line3d_walls(int w_top, int w_bottom, int wall_height, int index);
+int     keyPressed(int key, void *param);
+int     keyReleased(int key, void *param);
+void    render_player();
+void    init_player();
+void    player_update();
+int     grid_has_sprite_at(int x, int y);
+int     grid_has_wall_at(int x, int y);
+void    render_ray();
 #endif

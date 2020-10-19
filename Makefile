@@ -1,12 +1,11 @@
-FLAGS = -Wall -Wextra -Werror -g
+FLAGS = -Wall -Wextra -Werror
 DFLAGS = -g3 -fsanitize=address
 CC = gcc
-SRCS = ft_putchar.c ft_putnbr.c cub.c get_next_line.c get_next_line_utils.c ft_split.c
-
+SRCS = srcs/ft_putchar.c srcs/ft_putnbr.c srcs/cub.c srcs/get_next_line.c srcs/get_next_line_utils.c srcs/ft_split.c srcs/sprite.c srcs/parse_map.c srcs/save_color.c srcs/check_element.c srcs/save_resolution.c srcs/parse_file.c srcs/check_map_error.c srcs/get_image.c srcs/save_direction_textures.c srcs/render_walls.c srcs/draw_walls.c srcs/keys.c srcs/player.c srcs/grid.c srcs/render_ray.c
 all: comp
 
 comp : 
-	gcc   $(FLAGS)  -I /usr/local/include $(SRCS) -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit 
+	gcc $(FLAGS) -I /usr/local/include $(SRCS) -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit 
 
 clean :
 	rm -rf a.out*

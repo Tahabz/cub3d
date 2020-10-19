@@ -1,4 +1,4 @@
-#include "cub.h"
+#include "../cub.h"
 
 void	ft_putchar(char c)
 {

@@ -1,4 +1,4 @@
-#include "cub.h"
+#include "../cub.h"
 
 static	int		is_split(char str, char c)
 {
