@@ -1,10 +1,22 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   parse_map.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/19 12:48:09 by mobaz             #+#    #+#             */
+/*   Updated: 2020/10/19 12:48:18 by mobaz            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../cub.h"
 #include "../cub1.h"
 
 char	**ft_reallocate(int i)
 {
-	char **new_map;
-	int j;
+	char	**new_map;
+	int		j;
 
 	j = 0;
 	new_map = (char **)malloc((i + 1) * sizeof(char *));
@@ -17,7 +29,7 @@ char	**ft_reallocate(int i)
 	return (new_map);
 }
 
-void 	parse_map(int fd, char *line)
+void	parse_map(int fd, char *line)
 {
 	int i;
 	int j;

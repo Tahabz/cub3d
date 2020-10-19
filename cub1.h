@@ -43,10 +43,10 @@ typedef struct s_rays {
 	double	wall_hit_x;
 	double	wall_hit_y;
 	double	distance;
-	int		isRayFacingDown;
-	int		isRayFacingUp;
-	int		isRayFacingLeft;
-	int		isRayFacingRight;
+	int		is_ray_facing_down;
+	int		is_ray_facing_up;
+	int		is_ray_facing_left;
+	int		is_ray_facing_right;
 	int		hit_vert;
 }				t_rays;
 
@@ -67,7 +67,23 @@ typedef struct s_sprite {
 	float distance;
 }				t_sprite;
 
+typedef struct		s_ray_vars
+{
+	double yintersection;
+	double xintersection;
+	double xstep;
+	double ystep;
+	double horDistance;
+	double verDistance;
+	double ver_wall_hit_x;
+	double verwall_hit_y;
+	double hor_wall_hit_x;
+	double hor_wall_hit_y;
+}					t_ray_vars;
 
+
+
+t_ray_vars			ray_vars;
 extern const int sprite_index;
 t_sprite sprite[500];
 

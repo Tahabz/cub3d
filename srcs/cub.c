@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobaz <marvin@41.fr>                       +#+  +:+       +#+        */
+/*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 10,,10,/0,1/0,4 1,5:41:0,6 by mobaz             #+#    #+#      */
-/*   Updated: 2020/02/05 15:56:10 by mobaz            ###   ########.fr       */
+/*   Created: Invalid date        by 0,6 by moba       #+#    #+#             */
+/*   Updated: 2020/10/19 13:44:25 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ const int WINDOW_HEIGHT3D  = 1200;
 double FOV_ANGLE = 60 * (M_PI / 180);
 double distance_proj_plane = 0;
 
-double normalizeAngle(double angle)
+double normalize_angle(double angle)
 {
 	angle = remainder(angle, (2 * M_PI));
 	if (angle < 0)
@@ -119,10 +119,10 @@ void init_ray(double rayAngle)
 	ray.distance = 0;
 	ray.wall_hit_x = 0;
 	ray.wall_hit_y = 0;
-	ray.isRayFacingDown = (rayAngle > 0 && rayAngle < M_PI);
-	ray.isRayFacingUp = !ray.isRayFacingDown;
-	ray.isRayFacingRight = ((rayAngle < 0.5 * M_PI) || (rayAngle > 1.5 * M_PI));
-	ray.isRayFacingLeft = !ray.isRayFacingRight;
+	ray.is_ray_facing_down = (rayAngle > 0 && rayAngle < M_PI);
+	ray.is_ray_facing_up = !ray.is_ray_facing_down;
+	ray.is_ray_facing_right = ((rayAngle < 0.5 * M_PI) || (rayAngle > 1.5 * M_PI));
+	ray.is_ray_facing_left = !ray.is_ray_facing_right;
 }
 
 void castAllRays()
@@ -132,7 +132,7 @@ void castAllRays()
 	int i = 0;
 	while (i < /*WINDOW_WIDTH2D*/win_width)
 	{
-		init_ray(normalizeAngle(rayAngle));
+		init_ray(normalize_angle(rayAngle));
 		render_ray();
 		rays[i] = ray;
 		rayAngle += (FOV_ANGLE / (win_width));
@@ -168,8 +168,8 @@ int main(void)
 	add_sprite();
 	mlx = mlx_init();
 	window = mlx_new_window(mlx, win_width, win_height, "Cub3D");
-	mlx_hook(window, 2, 0, keyPressed, NULL);
-	mlx_hook(window, 3, 0, keyReleased, NULL);
+	mlx_hook(window, 2, 0, key_pressed, NULL);
+	mlx_hook(window, 3, 0, key_released, NULL);
 	image = mlx_new_image(mlx, win_width, win_height);
 	data = (int *)mlx_get_data_addr(image, &a, &b, &c);
 	get_image();

@@ -1,73 +1,95 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   render_ray.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/19 13:40:37 by mobaz             #+#    #+#             */
+/*   Updated: 2020/10/19 14:38:36 by mobaz            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../cub.h"
 #include "../cub1.h"
 
-void render_ray()
+void				horizental_grid_intersection(void)
 {
-	double yintersection, xintersection;
-	double xstep, ystep;
-	double hor_wall_hit_x, hor_wall_hit_y, horDistance = 10000000000;
-
-	//---------------CLOSEST HORIZONTAL GRID INTERSECTION------------------------
-	yintersection = floorf(player.y / TILE_SIZE) * TILE_SIZE;
-	yintersection += (ray.isRayFacingDown ? TILE_SIZE : 0);
-	xintersection = player.x + (yintersection - player.y) / tanf(ray.rayAngle);
-	ystep = TILE_SIZE;
-	ystep *= (ray.isRayFacingUp ? - 1 : 1);
-	xstep = TILE_SIZE / tanf(ray.rayAngle);
-	xstep *= (ray.isRayFacingLeft && xstep > 0) ? -1 : 1;
-	xstep *= (ray.isRayFacingRight && xstep < 0) ? -1 : 1;
-
-	hor_wall_hit_x = xintersection;
-	hor_wall_hit_y = yintersection;
-	while (hor_wall_hit_y >= 0 && hor_wall_hit_y < WINDOW_HEIGHT2D && hor_wall_hit_x >= 0 && hor_wall_hit_x < WINDOW_WIDTH2D)
+	ray_vars.yintersection = floorf(player.y / TILE_SIZE) * TILE_SIZE;
+	ray_vars.yintersection += (ray.is_ray_facing_down ? TILE_SIZE : 0);
+	ray_vars.xintersection = player.x + (ray_vars.yintersection - player.y)
+							/ tanf(ray.rayAngle);
+	ray_vars.ystep = TILE_SIZE;
+	ray_vars.ystep *= (ray.is_ray_facing_up ? -1 : 1);
+	ray_vars.xstep = TILE_SIZE / tanf(ray.rayAngle);
+	ray_vars.xstep *= (ray.is_ray_facing_left && ray_vars.xstep > 0) ? -1 : 1;
+	ray_vars.xstep *= (ray.is_ray_facing_right && ray_vars.xstep < 0) ? -1 : 1;
+	ray_vars.hor_wall_hit_x = ray_vars.xintersection;
+	ray_vars.hor_wall_hit_y = ray_vars.yintersection;
+	while (ray_vars.hor_wall_hit_y >= 0 &&
+		ray_vars.hor_wall_hit_y < WIN_HEIGHT2D && ray_vars.hor_wall_hit_x
+		>= 0 && ray_vars.hor_wall_hit_x < WIN_WIDTH2D)
 	{
-		if (grid_has_wall_at(hor_wall_hit_x, ray.isRayFacingUp ? hor_wall_hit_y - 1: hor_wall_hit_y))
+		if (grid_has_wall_at(ray_vars.hor_wall_hit_x, ray.is_ray_facing_up ?
+			ray_vars.hor_wall_hit_y - 1 : ray_vars.hor_wall_hit_y))
 		{
-			horDistance = distance(hor_wall_hit_x, hor_wall_hit_y);
-			break;
+			ray_vars.horDistance = distance(ray_vars.hor_wall_hit_x,
+											ray_vars.hor_wall_hit_y);
+			break ;
 		}
-		hor_wall_hit_x += xstep;
-		hor_wall_hit_y += ystep;
+		ray_vars.hor_wall_hit_x += ray_vars.xstep;
+		ray_vars.hor_wall_hit_y += ray_vars.ystep;
 	}
-	//---------------CLOSEST ------------------------
+}
 
-	double ver_wall_hit_x, verwall_hit_y, verDistance = 1000000000;
-
-	xintersection = floorf(player.x / TILE_SIZE) * TILE_SIZE;
-	xintersection += (ray.isRayFacingRight ? TILE_SIZE : 0);
-	yintersection = player.y + (xintersection - player.x) * tanf(ray.rayAngle);
-	xstep = TILE_SIZE;
-	xstep *= (ray.isRayFacingLeft ? -1 : 1);
-	ystep = TILE_SIZE * tanf(ray.rayAngle);
-	ystep *= (ray.isRayFacingUp && ystep > 0) ? -1 : 1;
-	ystep *= (ray.isRayFacingDown && ystep < 0) ? -1 : 1;
-
-	ver_wall_hit_x = xintersection;
-	verwall_hit_y = yintersection;
-	while (verwall_hit_y >= 0 && verwall_hit_y < WINDOW_HEIGHT2D && ver_wall_hit_x >= 0 && ver_wall_hit_x < WINDOW_WIDTH2D)
+void				vertical_grid_intersection(void)
+{
+	ray_vars.verDistance = 1000000000;
+	ray_vars.xintersection = floorf(player.x / TILE_SIZE) * TILE_SIZE;
+	ray_vars.xintersection += (ray.is_ray_facing_right ? TILE_SIZE : 0);
+	ray_vars.yintersection = player.y + (ray_vars.xintersection - player.x)
+							* tanf(ray.rayAngle);
+	ray_vars.xstep = TILE_SIZE;
+	ray_vars.xstep *= (ray.is_ray_facing_left ? -1 : 1);
+	ray_vars.ystep = TILE_SIZE * tanf(ray.rayAngle);
+	ray_vars.ystep *= (ray.is_ray_facing_up && ray_vars.ystep > 0) ? -1 : 1;
+	ray_vars.ystep *= (ray.is_ray_facing_down && ray_vars.ystep < 0) ? -1 : 1;
+	ray_vars.ver_wall_hit_x = ray_vars.xintersection;
+	ray_vars.verwall_hit_y = ray_vars.yintersection;
+	while (ray_vars.verwall_hit_y >= 0 && ray_vars.verwall_hit_y < WIN_HEIGHT2D
+	&& ray_vars.ver_wall_hit_x >= 0 && ray_vars.ver_wall_hit_x < WIN_WIDTH2D)
 	{
-		if (grid_has_wall_at(ray.isRayFacingLeft ? ver_wall_hit_x -1 : ver_wall_hit_x , verwall_hit_y))
+		if (grid_has_wall_at(ray.is_ray_facing_left ? ray_vars.ver_wall_hit_x
+		- 1 : ray_vars.ver_wall_hit_x, ray_vars.verwall_hit_y))
 		{
-			verDistance = distance(ver_wall_hit_x, verwall_hit_y);
-			break;
-		}		
-		ver_wall_hit_x += xstep;
-		verwall_hit_y += ystep;
+			ray_vars.verDistance = distance(ray_vars.ver_wall_hit_x,
+											ray_vars.verwall_hit_y);
+			break ;
+		}
+		ray_vars.ver_wall_hit_x += ray_vars.xstep;
+		ray_vars.verwall_hit_y += ray_vars.ystep;
 	}
-	if (verDistance < horDistance)
+}
+
+void				render_ray(void)
+{
+	ray_vars.horDistance = 10000000000;
+	horizental_grid_intersection();
+	vertical_grid_intersection();
+	if (ray_vars.verDistance < ray_vars.horDistance)
 	{
-	//	line(ray.rayAngle, hor_wall_hit_x, hor_wall_hit_y);
+	//	line(ray.rayAngle, ray_vars.hor_wall_hit_x, ray_vars.hor_wall_hit_y);
 		ray.hit_vert = 1;
-		ray.wall_hit_x = ver_wall_hit_x;
-		ray.wall_hit_y = verwall_hit_y;
-		ray.distance = verDistance;
+		ray.wall_hit_x = ray_vars.ver_wall_hit_x;
+		ray.wall_hit_y = ray_vars.verwall_hit_y;
+		ray.distance = ray_vars.verDistance;
 	}
 	else
 	{
 		ray.hit_vert = 0;
-		ray.wall_hit_x = hor_wall_hit_x;
-		ray.wall_hit_y = hor_wall_hit_y;
-		ray.distance = horDistance;
-	//	line(ray.rayAngle, ver_wall_hit_x, verwall_hit_y);
+		ray.wall_hit_x = ray_vars.hor_wall_hit_x;
+		ray.wall_hit_y = ray_vars.hor_wall_hit_y;
+		ray.distance = ray_vars.horDistance;
+	//	line(ray.rayAngle, ray_vars.ver_wall_hit_x, ray_vars.verwall_hit_y);
 	}
 }

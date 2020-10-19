@@ -1,7 +1,19 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   keys.c                                             :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/19 12:11:31 by mobaz             #+#    #+#             */
+/*   Updated: 2020/10/19 12:16:00 by mobaz            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../cub.h"
 #include "../cub1.h"
 
-int keyPressed(int key, void *param)
+int		key_pressed(int key, void *param)
 {
 	param = NULL;
 	if (key == UP_ARROW)
@@ -12,10 +24,10 @@ int keyPressed(int key, void *param)
 		player.turnDirection = -1;
 	else if (key == RIGHT_ARROW)
 		player.turnDirection = +1;
-	return 1;
+	return (1);
 }
 
-int keyReleased(int key, void *param)
+int		key_released(int key, void *param)
 {
 	param = NULL;
 	if (key == UP_ARROW)
@@ -26,5 +38,5 @@ int keyReleased(int key, void *param)
 		player.turnDirection = 0;
 	else if (key == RIGHT_ARROW)
 		player.turnDirection = 0;
-	return 0;
+	return (0);
 }

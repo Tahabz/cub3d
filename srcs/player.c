@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   player.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2020/10/19 12:48:33 by mobaz             #+#    #+#             */
+/*   Updated: 2020/10/19 12:50:26 by mobaz            ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../cub.h"
 #include "../cub1.h"
 
@@ -8,7 +20,7 @@
 // 	//line(player.rotationAngle);
 // }
 
-void init_player()
+void	init_player(void)
 {
 	player.turnDirection = 0;
 	player.walkDirection = 0;
@@ -16,12 +28,16 @@ void init_player()
 	player.rotationSpeed = 1 * (M_PI / 180);
 }
 
-void player_update()
+void	player_update(void)
 {
+	double	x;
+	double	y;
+	int		movestep;
+
 	player.rotationAngle += player.turnDirection * player.rotationSpeed;
-	int movestep = player.walkDirection * player.moveSpeed;
-	double x = player.x + cosf(player.rotationAngle) * movestep;
-	double y = player.y + sinf(player.rotationAngle) * movestep;
+	movestep = player.walkDirection * player.moveSpeed;
+	x = player.x + cosf(player.rotationAngle) * movestep;
+	y = player.y + sinf(player.rotationAngle) * movestep;
 	if (!grid_has_wall_at(x, player.y) && !grid_has_sprite_at(x, player.y))
 		player.x = x;
 	if (!grid_has_wall_at(player.x, y) && !grid_has_sprite_at(player.x, y))

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cub.h                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobaz <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:43:34 by mobaz             #+#    #+#             */
-/*   Updated: 2020/02/04 18:28:52 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/19 14:38:53 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 # define NUM_ROWS (19)
 # define NUM_COLS (80)
 # define TILE_SIZE 200
-# define WINDOW_WIDTH2D TILE_SIZE * NUM_COLS
-# define WINDOW_HEIGHT2D TILE_SIZE * NUM_ROWS
+# define WIN_WIDTH2D TILE_SIZE * NUM_COLS
+# define WIN_HEIGHT2D TILE_SIZE * NUM_ROWS
 # define UP_ARROW 126
 # define RIGHT_ARROW 124
 # define DOWN_ARROW 125
@@ -33,7 +33,7 @@
 # include <fcntl.h>
 
 char	**ft_split(char const *str, char c);
-double  normalizeAngle(double angle);
+double  normalize_angle(double angle);
 void    render_walls();
 void    ft_putchar(char c);
 void	castAllRays();
@@ -60,8 +60,8 @@ void	save_north_texture(char **texture);
 void	save_resolution(char **resolution);
 void	get_image();
 void	line3d_walls(int w_top, int w_bottom, int wall_height, int index);
-int     keyPressed(int key, void *param);
-int     keyReleased(int key, void *param);
+int     key_pressed(int key, void *param);
+int     key_released(int key, void *param);
 void    render_player();
 void    init_player();
 void    player_update();

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sprite.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mel-haya <mel-haya@student.42.fr>          +#+  +:+       +#+        */
+/*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 22:24:57 by mel-haya          #+#    #+#             */
-/*   Updated: 2020/03/11 17:35:09 by mel-haya         ###   ########.fr       */
+/*   Updated: 2020/10/19 13:12:06 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -128,10 +128,10 @@ void	render_sprite()
 			angle -= 2 * M_PI;
 		while (angle - player.rotationAngle < -M_PI)
 			angle += 2 * M_PI;
+		angle = normalize_angle(angle);
 		sprite_height = (TILE_SIZE / sprite[i].distance) * distance_proj_plane;
 		column_index = (angle - rays[0].rayAngle)
 						/ (FOV_ANGLE / win_width) - (sprite_height / 2);
-		angle = normalizeAngle(angle);
 		draw_sprite(column_index, sprite[i].distance, sprite_height);
 		i++;
 	}
