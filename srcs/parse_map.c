@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 12:48:09 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/19 12:48:18 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/19 19:52:57 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ void	parse_map(int fd, char *line)
 		map = ft_reallocate(i);
 		free(line);
 	}
+	num_rows = i;
 	map[i] = 0;
 	i = 0;
 	while (map[i])

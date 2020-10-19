@@ -6,15 +6,12 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/03/01 22:24:57 by mel-haya          #+#    #+#             */
-/*   Updated: 2020/10/19 13:12:06 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/19 20:15:50 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
 #include "../cub1.h"
-
-const int sprite_index = 3;
-
 
 void	save_sprite_texture(char **texture)
 {
@@ -24,29 +21,27 @@ void	save_sprite_texture(char **texture)
 	while (texture[i])
 		i++;
 	if (i != 2)
-		printf("There is a problem in the north texture element (number of informations is incorrect)\n");
+		printf("Sprite number of information is incorrect\n");
 	sp_image.texture = texture[1];
 	printf("%s\n", sp_image.texture);
 }
 
-void	add_sprite()
+void	add_sprite(void)
 {
 	int i;
 	int j;
-	int sp_index;
 
-	sp_index = 0;
 	i = 0;
 	while (map[i])
 	{
 		j = 0;
-		while(map[i][j])
+		while (map[i][j])
 		{
 			if (map[i][j] == '2')
 			{
-				sprite[sp_index].x = (j + 0.5) * TILE_SIZE;
-				sprite[sp_index].y = (i + 0.5) * TILE_SIZE;
-				sp_index++;
+				sprite[sprite_index].x = (j + 0.5) * TILE_SIZE;
+				sprite[sprite_index].y = (i + 0.5) * TILE_SIZE;
+				sprite_index++;
 			}
 			j++;
 		}
@@ -70,7 +65,8 @@ void	draw_sprite(int x, float distance, float height)
 		{
 			while (j < (win_height + height) / 2 - 1)
 			{
-				color = sp_image.data[(int)(y_offset / height * sp_image.height) * sp_image.width + (int)((i - x) / height * sp_image.width)];
+				color = sp_image.data[(int)(y_offset / height * sp_image.height)
+				* sp_image.width + (int)((i - x) / height * sp_image.width)];
 				if (j < win_height && j >= 0 && color != 0x000000)
 					data[(j) * win_width + (i)] = color;
 				j++;
@@ -81,7 +77,7 @@ void	draw_sprite(int x, float distance, float height)
 	}
 }
 
-void	sort_sprites()
+void	sort_sprites(void)
 {
 	int			i;
 	int			j;
@@ -111,7 +107,7 @@ void	sort_sprites()
 	}
 }
 
-void	render_sprite()
+void	render_sprite(void)
 {
 	float		angle;
 	float		sprite_height;
