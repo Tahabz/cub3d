@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 14:40:49 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/19 18:46:53 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/21 19:50:19 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,10 +19,10 @@ void	put_walls_to_image(double walltop, double wallbottom, int i)
 
 	j = 0;
 	while (j < walltop)
-		data[(j++ * win_width) + i] = 0;
+		data[(j++ * g_win_width) + i] = 0;
 	j = wallbottom;
-	while (j < win_height)
-		data[(j++ * win_width) + i] = 200;
+	while (j < g_win_height)
+		data[(j++ * g_win_width) + i] = 200;
 }
 
 void	render_walls(void)
@@ -34,17 +34,17 @@ void	render_walls(void)
 	double	wallbottom;
 
 	i = 0;
-	distance_proj_plane = (win_width / 2) / tanf(FOV_ANGLE / 2);
-	while (i < win_width)
+	g_distance_proj_plane = (g_win_width / 2) / tanf(g_fov_angle / 2);
+	while (i < g_win_width)
 	{
-		ray_distance = rays[i].distance * cosf(
-						rays[i].rayAngle - player.rotationAngle);
+		ray_distance = g_rays[i].distance * cosf(
+						g_rays[i].ray_angle - g_player.rotationAngle);
 		wall_strip_height = ((double)TILE_SIZE / ray_distance)
-								* (double)distance_proj_plane;
-		walltop = ((double)win_height / 2) - (wall_strip_height / 2);
+								* (double)g_distance_proj_plane;
+		walltop = ((double)g_win_height / 2) - (wall_strip_height / 2);
 		walltop = walltop < 0 ? 0 : walltop;
-		wallbottom = ((double)win_height / 2) + (wall_strip_height / 2);
-		wallbottom = wallbottom > win_height ? win_height : wallbottom;
+		wallbottom = ((double)g_win_height / 2) + (wall_strip_height / 2);
+		wallbottom = wallbottom > g_win_height ? g_win_height : wallbottom;
 		put_walls_to_image(walltop, wallbottom, i);
 		line3d_walls(walltop, wallbottom, wall_strip_height, i++);
 	}

@@ -18,16 +18,16 @@ void	check_map_errors()
 		{
 			if (map[r][j] == 'N' || map[r][j] == 'W' || map[r][j] == 'E' || map[r][j] == 'S')
 			{
-				player.x = j * 200 + 100; /*WINDOW_WIDTH2D / 2.5 - 200;*/
-				player.y = r * 200 + 100;/*WINDOW_HEIGHT2D / 2.5 + 90;*/
+				g_player.x = j * 200 + 100; /*WINDOW_WIDTH2D / 2.5 - 200;*/
+				g_player.y = r * 200 + 100;/*WINDOW_HEIGHT2D / 2.5 + 90;*/
 				if (map[r][j] == 'N')
-					player.rotationAngle = (3  * M_PI) / 2;
+					g_player.rotationAngle = (3  * M_PI) / 2;
 				else if (map[r][j] == 'S')
-					player.rotationAngle = M_PI / 2;
+					g_player.rotationAngle = M_PI / 2;
 				else if (map[r][j] == 'E')
-					player.rotationAngle = 0;
+					g_player.rotationAngle = 0;
 				else if (map[r][j] == 'W')
-					player.rotationAngle = M_PI;
+					g_player.rotationAngle = M_PI;
 			}
 			j++;
 		}

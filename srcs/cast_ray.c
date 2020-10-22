@@ -3,7 +3,7 @@
 
 void init_ray(double rayAngle)
 {
-	ray.rayAngle = rayAngle;
+	ray.ray_angle = rayAngle;
 	ray.distance = 0;
 	ray.wall_hit_x = 0;
 	ray.wall_hit_y = 0;
@@ -15,15 +15,15 @@ void init_ray(double rayAngle)
 
 void castAllRays()
 {
-	rays = (t_rays *)malloc(/*WINDOW_WIDTH2D*/win_width * sizeof(t_rays));
-	double rayAngle = player.rotationAngle - (FOV_ANGLE / 2);
+	g_rays = (t_rays *)malloc(/*WINDOW_WIDTH2D*/g_win_width * sizeof(t_rays));
+	double rayAngle = g_player.rotationAngle - (g_fov_angle / 2);
 	int i = 0;
-	while (i < /*WINDOW_WIDTH2D*/win_width)
+	while (i < /*WINDOW_WIDTH2D*/g_win_width)
 	{
 		init_ray(normalize_angle(rayAngle));
 		render_ray();
-		rays[i] = ray;
-		rayAngle += (FOV_ANGLE / (win_width));
+		g_rays[i] = ray;
+		rayAngle += (g_fov_angle / (g_win_width));
 		i++;
 	}
 }

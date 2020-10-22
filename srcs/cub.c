@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: Invalid date        by 0,6 by moba       #+#    #+#             */
-/*   Updated: 2020/10/19 13:44:25 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/21 19:11:26 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@
 
 const int WINDOW_WIDTH3D = 2000;
 const int WINDOW_HEIGHT3D  = 1200;
-double FOV_ANGLE = 60 * (M_PI / 180);
-double distance_proj_plane = 0;
+double g_fov_angle = 60 * (M_PI / 180);
+double g_distance_proj_plane = 0;
 
 double normalize_angle(double angle)
 {
@@ -30,7 +30,7 @@ double normalize_angle(double angle)
 //Distance Between two points
 double distance(double x, double y)
 {
-	return (sqrt((x - player.x) * (x - player.x) + (y - player.y) * (y - player.y)));
+	return (sqrt((x - g_player.x) * (x - g_player.x) + (y - g_player.y) * (y - g_player.y)));
 }
 //Drawing a rectangle
 // void rect(int tileX, int tileY, unsigned int tilecol, int size)
@@ -115,7 +115,7 @@ double distance(double x, double y)
 
 void init_ray(double rayAngle)
 {
-	ray.rayAngle = rayAngle;
+	ray.ray_angle = rayAngle;
 	ray.distance = 0;
 	ray.wall_hit_x = 0;
 	ray.wall_hit_y = 0;
@@ -127,15 +127,15 @@ void init_ray(double rayAngle)
 
 void castAllRays()
 {
-	rays = (t_rays *)malloc(/*WINDOW_WIDTH2D*/win_width * sizeof(t_rays));
-	double rayAngle = player.rotationAngle - (FOV_ANGLE / 2);
+	g_rays = (t_rays *)malloc(/*WINDOW_WIDTH2D*/g_win_width * sizeof(t_rays));
+	double rayAngle = g_player.rotationAngle - (g_fov_angle / 2);
 	int i = 0;
-	while (i < /*WINDOW_WIDTH2D*/win_width)
+	while (i < /*WINDOW_WIDTH2D*/g_win_width)
 	{
 		init_ray(normalize_angle(rayAngle));
 		render_ray();
-		rays[i] = ray;
-		rayAngle += (FOV_ANGLE / (win_width));
+		g_rays[i] = ray;
+		rayAngle += (g_fov_angle / (g_win_width));
 		i++;
 	}
 }
@@ -167,10 +167,10 @@ int main(void)
 	check_map_errors();
 	add_sprite();
 	mlx = mlx_init();
-	window = mlx_new_window(mlx, win_width, win_height, "Cub3D");
+	window = mlx_new_window(mlx, g_win_width, g_win_height, "Cub3D");
 	mlx_hook(window, 2, 0, key_pressed, NULL);
 	mlx_hook(window, 3, 0, key_released, NULL);
-	image = mlx_new_image(mlx, win_width, win_height);
+	image = mlx_new_image(mlx, g_win_width, g_win_height);
 	data = (int *)mlx_get_data_addr(image, &a, &b, &c);
 	get_image();
 	render();

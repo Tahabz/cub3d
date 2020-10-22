@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:43:34 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/19 14:38:53 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/21 19:10:53 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,22 +33,22 @@
 # include <fcntl.h>
 
 char	**ft_split(char const *str, char c);
-double  normalize_angle(double angle);
-void    render_walls();
-void    ft_putchar(char c);
+double	normalize_angle(double angle);
+void	render_walls();
+void	ft_putchar(char c);
 void	castAllRays();
-void    ft_putnbr(int n);
-void    rect(int tileX, int tileY, unsigned int tilecol, int size);
-void    render_grid();
+void	ft_putnbr(int n);
+void	rect(int tileX, int tileY, unsigned int tilecol, int size);
+void	render_grid();
 int		grid_has_wall_at(int x, int y);
 void	line3d(int tileX, int tileY, int height, unsigned int tilecol);
 void	check_map_errors();
-double  distance(double x, double y);
+double	distance(double x, double y);
 void	render_sprite();
-int     grid_has_sprite_at(int x, int y);
+int		grid_has_sprite_at(int x, int y);
 void	add_sprite();
 void	parse_file();
-void 	parse_map(int fd, char *line);
+void	parse_map(int fd, char *line);
 void	save_floor_color(char **element);
 void	save_ceilling_color(char **element);
 void	check_element(char **element);
@@ -60,12 +60,12 @@ void	save_north_texture(char **texture);
 void	save_resolution(char **resolution);
 void	get_image();
 void	line3d_walls(int w_top, int w_bottom, int wall_height, int index);
-int     key_pressed(int key, void *param);
-int     key_released(int key, void *param);
-void    render_player();
-void    init_player();
-void    player_update();
-int     grid_has_sprite_at(int x, int y);
-int     grid_has_wall_at(int x, int y);
-void    render_ray();
+int		key_pressed(int key, void *param);
+int		key_released(int key, void *param);
+void	render_player();
+void	init_player();
+void	player_update();
+int		grid_has_sprite_at(int x, int y);
+int		grid_has_wall_at(int x, int y);
+void	render_ray();
 #endif

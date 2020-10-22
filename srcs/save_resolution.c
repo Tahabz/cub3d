@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 19:58:03 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/19 19:58:46 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/21 19:04:45 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,10 +31,10 @@ void	save_resolution(char **resolution)
 			j++;
 		}
 		if (i == 1)
-			win_width = atoi(resolution[i]);
+			g_win_width = atoi(resolution[i]);
 		else if (i == 2)
-			win_height = atoi(resolution[i]);
+			g_win_height = atoi(resolution[i]);
 		i++;
 	}
-	printf("%d %d\n", win_height, win_width);
+	printf("%d %d\n", g_win_height, g_win_width);
 }

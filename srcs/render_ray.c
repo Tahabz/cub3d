@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 13:40:37 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/19 14:38:36 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/21 19:11:26 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 
 void				horizental_grid_intersection(void)
 {
-	ray_vars.yintersection = floorf(player.y / TILE_SIZE) * TILE_SIZE;
+	ray_vars.yintersection = floorf(g_player.y / TILE_SIZE) * TILE_SIZE;
 	ray_vars.yintersection += (ray.is_ray_facing_down ? TILE_SIZE : 0);
-	ray_vars.xintersection = player.x + (ray_vars.yintersection - player.y)
-							/ tanf(ray.rayAngle);
+	ray_vars.xintersection = g_player.x + (ray_vars.yintersection - g_player.y)
+							/ tanf(ray.ray_angle);
 	ray_vars.ystep = TILE_SIZE;
 	ray_vars.ystep *= (ray.is_ray_facing_up ? -1 : 1);
-	ray_vars.xstep = TILE_SIZE / tanf(ray.rayAngle);
+	ray_vars.xstep = TILE_SIZE / tanf(ray.ray_angle);
 	ray_vars.xstep *= (ray.is_ray_facing_left && ray_vars.xstep > 0) ? -1 : 1;
 	ray_vars.xstep *= (ray.is_ray_facing_right && ray_vars.xstep < 0) ? -1 : 1;
 	ray_vars.hor_wall_hit_x = ray_vars.xintersection;
@@ -45,13 +45,13 @@ void				horizental_grid_intersection(void)
 void				vertical_grid_intersection(void)
 {
 	ray_vars.verDistance = 1000000000;
-	ray_vars.xintersection = floorf(player.x / TILE_SIZE) * TILE_SIZE;
+	ray_vars.xintersection = floorf(g_player.x / TILE_SIZE) * TILE_SIZE;
 	ray_vars.xintersection += (ray.is_ray_facing_right ? TILE_SIZE : 0);
-	ray_vars.yintersection = player.y + (ray_vars.xintersection - player.x)
-							* tanf(ray.rayAngle);
+	ray_vars.yintersection = g_player.y + (ray_vars.xintersection - g_player.x)
+							* tanf(ray.ray_angle);
 	ray_vars.xstep = TILE_SIZE;
 	ray_vars.xstep *= (ray.is_ray_facing_left ? -1 : 1);
-	ray_vars.ystep = TILE_SIZE * tanf(ray.rayAngle);
+	ray_vars.ystep = TILE_SIZE * tanf(ray.ray_angle);
 	ray_vars.ystep *= (ray.is_ray_facing_up && ray_vars.ystep > 0) ? -1 : 1;
 	ray_vars.ystep *= (ray.is_ray_facing_down && ray_vars.ystep < 0) ? -1 : 1;
 	ray_vars.ver_wall_hit_x = ray_vars.xintersection;

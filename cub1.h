@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:07:27 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/19 20:07:28 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/21 19:51:00 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ typedef struct s_player {
 }				t_player;
 
 typedef struct s_rays {
-	double 	rayAngle;
+	double 	ray_angle;
 	double	wall_hit_x;
 	double	wall_hit_y;
 	double	distance;
@@ -73,27 +73,27 @@ typedef struct		s_ray_vars
 
 
 t_ray_vars			ray_vars;
-int sprite_index;
-t_sprite sprite[500];
+int g_sprite_index;
+t_sprite g_sprites[500];
 
 extern const int WINDOW_WIDTH3D;
 extern const int WINDOW_HEIGHT3D;
 
-int win_width;
-int win_height;
+int g_win_width;
+int g_win_height;
 
 int floor_color[3];
 int ceilling_color[3];
-extern double FOV_ANGLE;
-extern double distance_proj_plane;
+extern double g_fov_angle;
+extern double g_distance_proj_plane;
 
 t_image no_image;
 t_image we_image;
 t_image ea_image;
 t_image so_image;
-t_image sp_image;
-t_rays *rays;
+t_image g_sp_image;
+t_rays *g_rays;
 t_rays ray;
-t_player player;
+t_player g_player;
 
 int num_rows;
