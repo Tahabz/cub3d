@@ -6,12 +6,11 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 11:58:46 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/21 19:04:55 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/23 11:49:48 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
-#include "../cub1.h"
 
 void	line3d_walls(int w_top, int w_bottom, int wall_height, int index)
 {
@@ -28,16 +27,16 @@ void	line3d_walls(int w_top, int w_bottom, int wall_height, int index)
 	while (j < w_bottom)
 	{
 		offset_y = (j + ((wall_height / 2) - (g_win_height / 2))) *
-			((double)we_image.height / (double)wall_height);
+			((double)g_we_image.height / (double)wall_height);
 		offset_y = offset_y < 0 ? 0 : offset_y;
-		if (g_rays[index].hit_vert && g_rays[index].is_ray_facing_left)
-			color = we_image.data[(offset_y * we_image.height) + offset_x];
-		else if (g_rays[index].hit_vert && g_rays[index].is_ray_facing_right)
-			color = ea_image.data[(offset_y * ea_image.height) + offset_x];
-		else if (!g_rays[index].hit_vert && g_rays[index].is_ray_facing_up)
-			color = no_image.data[(offset_y * no_image.height) + offset_x];
-		else if (!g_rays[index].hit_vert && g_rays[index].is_ray_facing_down)
-			color = so_image.data[(offset_y * so_image.height) + offset_x];
-		data[(j++ * g_win_width) + index] = color;
+		if (g_rays[index].hit_vert && g_rays[index].facing_left)
+			color = g_we_image.data[(offset_y * g_we_image.height) + offset_x];
+		else if (g_rays[index].hit_vert && g_rays[index].facing_right)
+			color = g_ea_image.data[(offset_y * g_ea_image.height) + offset_x];
+		else if (!g_rays[index].hit_vert && g_rays[index].facing_up)
+			color = g_no_image.data[(offset_y * g_no_image.height) + offset_x];
+		else if (!g_rays[index].hit_vert && g_rays[index].facing_down)
+			color = g_so_image.data[(offset_y * g_so_image.height) + offset_x];
+		g_data[(j++ * g_win_width) + index] = color;
 	}
 }

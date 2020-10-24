@@ -6,33 +6,32 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 12:09:21 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/21 19:03:17 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/23 11:46:31 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
-#include "../cub1.h"
 
 void	get_image(void)
 {
-	no_image.image = mlx_xpm_file_to_image(mlx, no_image.texture,
-									&(no_image.width), &(no_image.height));
-	no_image.data = (int *)mlx_get_data_addr(no_image.image,
-									&no_image.bpp, &no_image.sl, &no_image.end);
-	g_sp_image.image = mlx_xpm_file_to_image(mlx, g_sp_image.texture,
-									&(g_sp_image.width), &(g_sp_image.height));
-	g_sp_image.data = (int *)mlx_get_data_addr(g_sp_image.image,
-									&g_sp_image.bpp, &g_sp_image.sl, &g_sp_image.end);
-	ea_image.image = mlx_xpm_file_to_image(mlx, ea_image.texture,
-									&(ea_image.width), &(ea_image.height));
-	ea_image.data = (int *)mlx_get_data_addr(ea_image.image,
-									&ea_image.bpp, &ea_image.sl, &ea_image.end);
-	so_image.image = mlx_xpm_file_to_image(mlx, so_image.texture,
-									&(so_image.width), &(so_image.height));
-	so_image.data = (int *)mlx_get_data_addr(so_image.image,
-									&so_image.bpp, &so_image.sl, &so_image.end);
-	we_image.image = mlx_xpm_file_to_image(mlx, we_image.texture,
-									&(we_image.width), &(we_image.height));
-	we_image.data = (int *)mlx_get_data_addr(we_image.image,
-									&we_image.bpp, &we_image.sl, &we_image.end);
+	g_no_image.image = mlx_xpm_file_to_image(
+		g_mlx, g_no_image.texture, &(g_no_image.width), &(g_no_image.height));
+	g_no_image.data = (int *)mlx_get_data_addr(
+		g_no_image.image, &g_no_image.bpp, &g_no_image.sl, &g_no_image.end);
+	g_sp_image.image = mlx_xpm_file_to_image(
+		g_mlx, g_sp_image.texture, &(g_sp_image.width), &(g_sp_image.height));
+	g_sp_image.data = (int *)mlx_get_data_addr(
+		g_sp_image.image, &g_sp_image.bpp, &g_sp_image.sl, &g_sp_image.end);
+	g_ea_image.image = mlx_xpm_file_to_image(
+		g_mlx, g_ea_image.texture, &(g_ea_image.width), &(g_ea_image.height));
+	g_ea_image.data = (int *)mlx_get_data_addr(
+		g_ea_image.image, &g_ea_image.bpp, &g_ea_image.sl, &g_ea_image.end);
+	g_so_image.image = mlx_xpm_file_to_image(
+		g_mlx, g_so_image.texture, &(g_so_image.width), &(g_so_image.height));
+	g_so_image.data = (int *)mlx_get_data_addr(
+		g_so_image.image, &g_so_image.bpp, &g_so_image.sl, &g_so_image.end);
+	g_we_image.image = mlx_xpm_file_to_image(
+		g_mlx, g_we_image.texture, &(g_we_image.width), &(g_we_image.height));
+	g_we_image.data = (int *)mlx_get_data_addr(
+		g_we_image.image, &g_we_image.bpp, &g_we_image.sl, &g_we_image.end);
 }

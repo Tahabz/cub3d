@@ -6,13 +6,21 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:43:34 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/21 19:10:53 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/24 13:50:12 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB_H
 # define CUB_H
 # include "get_next_line.h"
+# include "cub1.h"
+# include <stdio.h>
+# include <stdlib.h>
+# include <math.h>
+# include <mlx.h>
+# include <unistd.h>
+# include <string.h>
+# include <fcntl.h>
 # define NUM_ROWS (19)
 # define NUM_COLS (80)
 # define TILE_SIZE 200
@@ -24,24 +32,17 @@
 # define LEFT_ARROW 123
 # define WALL_STRIP_WIDTH 1
 # define MINIMAP_SCALE 0.2
-# include <stdio.h>
-# include <stdlib.h>
-# include <math.h>
-# include <mlx.h>
-# include <unistd.h>
-# include <string.h>
-# include <fcntl.h>
-
+# define ESCAPE 53
 char	**ft_split(char const *str, char c);
 double	normalize_angle(double angle);
 void	render_walls();
 void	ft_putchar(char c);
-void	castAllRays();
+void	cast_rays();
 void	ft_putnbr(int n);
-void	rect(int tileX, int tileY, unsigned int tilecol, int size);
+void	rect(int tilex, int tiley, unsigned int tilecol, int size);
 void	render_grid();
 int		grid_has_wall_at(int x, int y);
-void	line3d(int tileX, int tileY, int height, unsigned int tilecol);
+void	line3d(int tilex, int tiley, int height, unsigned int tilecol);
 void	check_map_errors();
 double	distance(double x, double y);
 void	render_sprite();
@@ -68,4 +69,10 @@ void	player_update();
 int		grid_has_sprite_at(int x, int y);
 int		grid_has_wall_at(int x, int y);
 void	render_ray();
+void	save_sprite_texture(char **texture);
+void	draw_one_pixel(int y, int x, double color);
+void	free_memory();
+void	ft_error();
+void	free_double_pointer(char **ptr);
+void	ft_map_error(int i, int j);
 #endif

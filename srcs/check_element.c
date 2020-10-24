@@ -6,12 +6,11 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 11:59:40 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/19 11:59:41 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/23 11:06:52 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
-#include "../cub1.h"
 
 void	check_element(char **element)
 {
