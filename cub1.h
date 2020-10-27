@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:07:27 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/24 12:35:46 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/27 14:07:26 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,4 +87,8 @@ t_rays				*g_rays;
 t_rays				g_ray;
 t_player			g_player;
 int					g_num_rows;
+int					att;
+int					bits_per_pixel;
+int					size_line;
+int					endian;
 #endif

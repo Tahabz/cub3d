@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 18:49:03 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/23 11:08:03 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/26 13:12:52 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ void	save_floor_color(char **element)
 	g_floor_color[0] = atoi(floor_color_char[0]);
 	g_floor_color[1] = atoi(floor_color_char[1]);
 	g_floor_color[2] = atoi(floor_color_char[2]);
+	free_double_pointer(floor_color_char);
+	free_double_pointer(element);
 	printf("%d %d %d\n", g_floor_color[0], g_floor_color[1], g_floor_color[2]);
 }
 
@@ -74,6 +76,8 @@ void	save_ceilling_color(char **element)
 	g_ceilling_color[0] = atoi(floor_ceilling_char[0]);
 	g_ceilling_color[1] = atoi(floor_ceilling_char[1]);
 	g_ceilling_color[2] = atoi(floor_ceilling_char[2]);
+	free_double_pointer(floor_ceilling_char);
+	free_double_pointer(element);
 	printf("%d %d %d\n", g_ceilling_color[0],
 					g_ceilling_color[1], g_ceilling_color[2]);
 }
