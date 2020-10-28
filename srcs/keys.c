@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 12:11:31 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/26 13:07:22 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/28 17:59:04 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ int		key_pressed(int key, void *param)
 		g_player.turn_direction = +1;
 	else if (key == ESCAPE)
 		free_memory();
-	
 	return (1);
 }
 

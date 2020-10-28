@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:07:27 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/27 14:07:26 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/28 17:53:56 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,6 +66,15 @@ typedef struct		s_ray_vars
 	double	hor_hit_x;
 	double	hor_hit_y;
 }					t_ray_vars;
+
+typedef struct		s_screenshot
+{
+	int				widthInBytes;
+	int				paddingSize;
+	int				stride;
+	unsigned char*	file_header;
+	unsigned char*	info_header;
+}					t_screenshot;
 
 t_ray_vars			g_ray_vars;
 int					g_sprite_index;

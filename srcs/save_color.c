@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 18:49:03 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/26 13:12:52 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/28 18:11:07 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,9 +27,7 @@ void	save_floor_color(char **element)
 {
 	int		i;
 	char	**floor_color_char;
-	int		el_count;
 
-	el_count = 0;
 	i = 0;
 	while (element[i])
 		i++;

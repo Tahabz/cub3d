@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 11:22:26 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/27 14:07:17 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/28 17:57:34 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,8 @@ int			main(void)
 	mlx_hook(g_window, 2, 0, key_pressed, NULL);
 	mlx_hook(g_window, 3, 0, key_released, NULL);
 	g_image = mlx_new_image(g_mlx, g_win_width, g_win_height);
-	g_data = (int *)mlx_get_data_addr(g_image, &bits_per_pixel, &size_line, &endian);
+	g_data = (int *)mlx_get_data_addr(g_image, &bits_per_pixel,
+										&size_line, &endian);
 	get_image();
 	render();
 	mlx_loop_hook(g_mlx, update, (void *)0);

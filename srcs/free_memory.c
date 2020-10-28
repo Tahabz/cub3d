@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 12:19:09 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/26 13:39:25 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/28 17:58:51 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	free_double_pointer(char **ptr)
 	free(ptr);
 }
 
-void	free_images()
+void	free_images(void)
 {
 	free(g_so_image.data);
 	free(g_so_image.image);
@@ -41,7 +41,7 @@ void	free_images()
 	free(g_sp_image.texture);
 }
 
-void	free_memory()
+void	free_memory(void)
 {
 	free_double_pointer(g_map);
 	free_images();

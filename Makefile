@@ -26,7 +26,8 @@ SRCS =	srcs/ft_putchar.c \
 		srcs/cast_ray.c \
 		srcs/draw_one_pixel.c \
 		srcs/free_memory.c \
-		srcs/ft_error.c 
+		srcs/ft_error.c \
+		srcs/screenshot.c
 all: comp
 
 comp : 
