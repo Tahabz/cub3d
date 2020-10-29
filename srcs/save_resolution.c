@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 19:58:03 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/28 18:06:37 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/29 13:55:09 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,9 +44,9 @@ void	save_resolution(char **resolution)
 		if (check_resolution_error(resolution, i))
 			return (ft_error("Resolution number of information is invalid)"));
 		if (i == 1)
-			g_win_width = atoi(resolution[1]);
+			g_win_width = ft_atoi(resolution[1]);
 		else if (i == 2)
-			g_win_height = atoi(resolution[2]);
+			g_win_height = ft_atoi(resolution[2]);
 		i++;
 	}
 	free_double_pointer(resolution);

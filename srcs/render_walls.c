@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 14:40:49 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/28 18:06:22 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/29 11:13:06 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,10 +18,12 @@ void	put_walls_to_image(double walltop, double wallbottom, int i)
 
 	j = 0;
 	while (j < walltop)
-		g_data[(j++ * g_win_width) + i] = 0;
+		g_data[(j++ * g_win_width) + i] = create_rgb(g_ceilling_color[0],
+								g_ceilling_color[1], g_ceilling_color[2]);
 	j = wallbottom;
 	while (j < g_win_height)
-		g_data[(j++ * g_win_width) + i] = 200;
+		g_data[(j++ * g_win_width) + i] = create_rgb(g_floor_color[0],
+								g_floor_color[1], g_floor_color[2]);
 }
 
 void	render_walls(void)
@@ -48,7 +50,7 @@ void	render_walls(void)
 		line3d_walls(walltop, wallbottom, wall_strip_height, i++);
 	}
 	render_sprite();
-	if (att++ == 0)
+	if (g_att++ == 1)
 		screenshot();
 	mlx_put_image_to_window(g_mlx, g_window, g_image, 0, 0);
 }

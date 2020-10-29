@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:43:34 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/28 17:41:22 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/29 14:07:44 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@
 # define WALL_STRIP_WIDTH 1
 # define MINIMAP_SCALE 0.2
 # define ESCAPE 53
+
 char			**ft_split(char const *str, char c);
 double			normalize_angle(double angle);
 void			render_walls();
@@ -60,7 +61,8 @@ void			save_west_texture(char **texture);
 void			save_north_texture(char **texture);
 void			save_resolution(char **resolution);
 void			get_image();
-void			line3d_walls(int w_top, int w_bottom, int wall_height, int index);
+void			line3d_walls(int w_top, int w_bottom,
+							int wall_height, int index);
 int				key_pressed(int key, void *param);
 int				key_released(int key, void *param);
 void			render_player();
@@ -75,8 +77,12 @@ void			free_memory();
 void			ft_error();
 void			free_double_pointer(char **ptr);
 void			ft_map_error(int i, int j);
-void 			generate_bitmap_image();
-unsigned char*	create_bitmap_file_header(int stride);
-unsigned char*	create_bitmap_info_header();
+void			generate_bitmap_image();
+unsigned char	*create_bitmap_file_header(int stride);
+unsigned char	*create_bitmap_info_header();
 void			screenshot();
+unsigned long	create_rgb(int r, int g, int b);
+int				ft_atoi(const char *str);
+void			ft_putstr(char *s);
+char			*ft_itoa(int n);
 #endif

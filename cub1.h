@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:07:27 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/28 17:53:56 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/29 11:14:57 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,11 @@ typedef struct		s_ray_vars
 
 typedef struct		s_screenshot
 {
-	int				widthInBytes;
-	int				paddingSize;
+	int				width_in_bytes;
+	int				padding_size;
 	int				stride;
-	unsigned char*	file_header;
-	unsigned char*	info_header;
+	unsigned char	*file_header;
+	unsigned char	*info_header;
 }					t_screenshot;
 
 t_ray_vars			g_ray_vars;
@@ -96,8 +96,8 @@ t_rays				*g_rays;
 t_rays				g_ray;
 t_player			g_player;
 int					g_num_rows;
-int					att;
-int					bits_per_pixel;
-int					size_line;
-int					endian;
+int					g_att;
+int					g_bits_per_pixel;
+int					g_size_line;
+int					g_endian;
 #endif

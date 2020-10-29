@@ -1,5 +1,5 @@
 FLAGS = -Wall -Wextra -Werror -g
-DFLAGS = -g3 -fsanitize=address
+DFLAGS = -D L_C=N
 CC = gcc
 SRCS =	srcs/ft_putchar.c \
 		srcs/ft_putnbr.c \
@@ -27,7 +27,11 @@ SRCS =	srcs/ft_putchar.c \
 		srcs/draw_one_pixel.c \
 		srcs/free_memory.c \
 		srcs/ft_error.c \
-		srcs/screenshot.c
+		srcs/screenshot.c \
+		srcs/create_rgb.c \
+		srcs/ft_atoi.c \
+		srcs/ft_putstr.c \
+		srcs/ft_itoa.c 
 all: comp
 
 comp : 

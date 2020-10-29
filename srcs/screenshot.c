@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 17:07:29 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/28 18:09:01 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/29 11:12:48 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,10 @@ void			generate_bitmap_image(void)
 	t_screenshot			screenshot;
 	static unsigned char	padding[3] = {0, 0, 0};
 
-	screenshot.widthInBytes = g_win_width * g_bytes_per_pixel;
-	screenshot.paddingSize = (4 - (screenshot.widthInBytes) % 4) % 4;
-	screenshot.stride = screenshot.widthInBytes + screenshot.paddingSize;
-	fd = open("screenshot.bmp", O_RDWR, S_IRUSR | S_IWUSR);
+	screenshot.width_in_bytes = g_win_width * g_bytes_per_pixel;
+	screenshot.padding_size = (4 - (screenshot.width_in_bytes) % 4) % 4;
+	screenshot.stride = screenshot.width_in_bytes + screenshot.padding_size;
+	fd = creat("screenshot.bmp", S_IRUSR | S_IWUSR);
 	screenshot.file_header = create_bitmap_file_header(screenshot.stride);
 	write(fd, screenshot.file_header, g_file_header_size);
 	screenshot.info_header = create_bitmap_info_header();
@@ -40,9 +40,9 @@ void			generate_bitmap_image(void)
 	i = g_win_height;
 	while (i)
 	{
-		write(fd, (unsigned char *)g_data + (i * screenshot.widthInBytes),
+		write(fd, (unsigned char *)g_data + (i * screenshot.width_in_bytes),
 				g_bytes_per_pixel * g_win_width);
-		write(fd, padding, screenshot.paddingSize);
+		write(fd, padding, screenshot.padding_size);
 		i--;
 	}
 	close(fd);

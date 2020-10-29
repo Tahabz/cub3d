@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 17:59:37 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/28 17:59:38 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/29 14:34:53 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +47,7 @@ void	check_map_sides(int r, int i)
 	{
 		if (g_map[0][i] == ' ')
 		{
-			if (g_map[1][i] == '0')
+			if (g_map[1][i] == '0' || g_map[1][i] == '2')
 				ft_map_error(0, i);
 		}
 		else
@@ -57,7 +57,7 @@ void	check_map_sides(int r, int i)
 	{
 		if (g_map[r - 1][i] == ' ')
 		{
-			if (g_map[r - 2][i] == '0')
+			if (g_map[r - 2][i] == '0' || g_map[r - 2][i] == '2')
 				ft_map_error(r - 2, i);
 		}
 		else
@@ -65,6 +65,22 @@ void	check_map_sides(int r, int i)
 	}
 	if (g_map[i][0] != '1' && g_map[i][0] != ' ')
 		ft_map_error(i, 0);
+}
+
+void	check_index_surrounding(int i, int j, int r, int t)
+{
+	if (j <= t && g_map[i][j + 1])
+	{
+		if (j > 0 && i > 0 && i < r - 1)
+		{
+			if (g_map[i][j + 1] == '0' || g_map[i][j - 1] == '0'
+				|| g_map[i + 1][j] == '0' || g_map[i - 1][j] == '0')
+				ft_map_error(i, j);
+			else if (g_map[i][j + 1] == '2' || g_map[i][j - 1] == '2'
+				|| g_map[i + 1][j] == '2' || g_map[i - 1][j] == '2')
+				ft_map_error(i, j);
+		}
+	}
 }
 
 void	check_map_insides(int r, int i, int j)
@@ -78,13 +94,7 @@ void	check_map_insides(int r, int i, int j)
 			ft_map_error(i, j);
 	}
 	if (g_map[i][j] == ' ')
-	{
-		if (j <= t && g_map[i][j + 1])
-			if (j > 0 && i > 0 && i < r - 1)
-				if (g_map[i][j + 1] == '0' || g_map[i][j - 1] == '0'
-					|| g_map[i + 1][j] == '0' || g_map[i - 1][j] == '0')
-					ft_map_error(i, j);
-	}
+		check_index_surrounding(i, j, r, t);
 	if (g_map[i][j] == '0')
 	{
 		if (j > t && t != 0)

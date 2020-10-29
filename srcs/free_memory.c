@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 12:19:09 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/28 17:58:51 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/29 13:46:29 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,33 +22,8 @@ void	free_double_pointer(char **ptr)
 	free(ptr);
 }
 
-void	free_images(void)
-{
-	free(g_so_image.data);
-	free(g_so_image.image);
-	free(g_so_image.texture);
-	free(g_we_image.data);
-	free(g_we_image.image);
-	free(g_we_image.texture);
-	free(g_ea_image.data);
-	free(g_ea_image.image);
-	free(g_ea_image.texture);
-	free(g_no_image.data);
-	free(g_no_image.image);
-	free(g_no_image.texture);
-	free(g_sp_image.data);
-	free(g_sp_image.image);
-	free(g_sp_image.texture);
-}
-
 void	free_memory(void)
 {
 	free_double_pointer(g_map);
-	free_images();
-	free(g_rays);
-	free(g_mlx);
-	free(g_image);
-	free(g_data);
-	free(g_window);
 	exit(0);
 }
