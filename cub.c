@@ -174,7 +174,7 @@ void init_player()
 {
 	player.turnDirection = 0;
 	player.walkDirection = 0;
-	player.moveSpeed = 5;
+	player.moveSpeed = 10;
 	player.rotationSpeed = 1 * (M_PI / 180);
 }
 
@@ -259,7 +259,7 @@ void render_ray()
 	hor_wall_hit_y = yintersection;
 	while (hor_wall_hit_y >= 0 && hor_wall_hit_y < WINDOW_HEIGHT2D && hor_wall_hit_x >= 0 && hor_wall_hit_x < WINDOW_WIDTH2D)
 	{
-		if (grid_hasWallAt(hor_wall_hit_x, ray.isRayFacingUp ? hor_wall_hit_y - 1: hor_wall_hit_y))
+		if (grid_hasWallAt(hor_wall_hit_x, hor_wall_hit_y))
 		{
 			horDistance = distance(hor_wall_hit_x, hor_wall_hit_y);
 			break;
@@ -284,7 +284,7 @@ void render_ray()
 	verwall_hit_y = yintersection;
 	while (verwall_hit_y >= 0 && verwall_hit_y < WINDOW_HEIGHT2D && ver_wall_hit_x >= 0 && ver_wall_hit_x < WINDOW_WIDTH2D)
 	{
-		if (grid_hasWallAt(ray.isRayFacingLeft ? ver_wall_hit_x -1 : ver_wall_hit_x , verwall_hit_y))
+		if (grid_hasWallAt(ver_wall_hit_x , verwall_hit_y))
 		{
 			verDistance = distance(ver_wall_hit_x, verwall_hit_y);
 			break;
@@ -743,4 +743,4 @@ int main(void)
 	mlx_loop_hook(mlx, update, (void *)0);
 	mlx_loop(mlx);
 	return (0);
-}
+} 			
