@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read.c                                             :+:      :+:    :+:   */
+/*   get_next_line.h                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobaz <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:17:20 by mobaz             #+#    #+#             */
-/*   Updated: 2019/10/31 23:14:24 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/09 13:06:09 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,9 @@
 # include <stdlib.h>
 # include <unistd.h>
 # define BUFFER_SIZE 32
+
 int			get_next_line(int fd, char **line);
 void		*ft_char_calloc(size_t i);
 size_t		ft_strlen(const char *s);
 char		*ft_strcpy(char *dest, const char *src);
-char		*ft_strdup(char *str);
-char		*ft_substr(char *s, unsigned int start, size_t len);
 #endif

@@ -1,5 +1,6 @@
-FLAGS = -Wall -Wextra -Werror -g
-DFLAGS = -D L_C=N
+FLAGS = -Wall -Wextra -Werror
+NAME = cub3D
+DFLAGS = -g -g3 -fsanitize=address
 CC = gcc
 SRCS =	srcs/ft_putchar.c \
 		srcs/ft_putnbr.c \
@@ -31,11 +32,25 @@ SRCS =	srcs/ft_putchar.c \
 		srcs/create_rgb.c \
 		srcs/ft_atoi.c \
 		srcs/ft_putstr.c \
-		srcs/ft_itoa.c 
-all: comp
+		srcs/ft_itoa.c \
+		srcs/get_args.c \
+		srcs/init_textures.c \
+		srcs/ft_calloc.c \
+		srcs/ft_memcpy.c \
+		srcs/ft_strrchr.c
 
-comp : 
-	gcc $(FLAGS) -I /usr/local/include $(SRCS) -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit 
+all: $(NAME)
+
+lib :
+	cd libft; make
+
+$(NAME) : $(SRCS)
+	gcc $(FLAGS) -o $(NAME) -I /usr/local/include $(SRCS) libft/libft.a -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit 
 
 clean :
-	rm -rf a.out*
+	rm -rf cub3D
+
+fclean: clean
+	rm *.bmp; cd libft; make fclean
+
+re : fclean lib $(NAME)

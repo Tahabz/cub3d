@@ -1,43 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   read.c                                             :+:      :+:    :+:   */
+/*   get_next_line.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mobaz <marvin@42.fr>                       +#+  +:+       +#+        */
+/*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:17:20 by mobaz             #+#    #+#             */
-/*   Updated: 2019/11/02 15:41:21 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/09 13:09:47 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../get_next_line.h"
-
-char	*ft_strjoin(char *s1, char *s2)
-{
-	char		*ptr;
-	int			i;
-	int			j;
-
-	if (!s2)
-		return (0);
-	if (!s1)
-		s1 = malloc(1);
-	ptr = malloc(ft_strlen(s1) + ft_strlen(s2) + 1);
-	if (!ptr)
-		return (0);
-	i = 0;
-	j = 0;
-	while (*(s1 + i) != '\0')
-	{
-		*(ptr + i) = *(s1 + i);
-		i++;
-	}
-	while (*(s2 + j) != '\0')
-		*(ptr + i++) = *(s2 + j++);
-	*(ptr + i) = '\0';
-	free(s1);
-	return (ptr);
-}
+#include "../cub.h"
 
 int		ft_check_new_line(char *line)
 {

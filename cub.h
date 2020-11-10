@@ -6,14 +6,15 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:43:34 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/29 14:07:44 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/08 14:41:13 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef CUB_H
 # define CUB_H
 # include "get_next_line.h"
-# include "cub1.h"
+# include "globals.h"
+# include "libft/libft.h"
 # include <stdio.h>
 # include <stdlib.h>
 # include <math.h>
@@ -26,10 +27,10 @@
 # define TILE_SIZE 200
 # define WIN_WIDTH2D TILE_SIZE * NUM_COLS
 # define WIN_HEIGHT2D TILE_SIZE * NUM_ROWS
-# define UP_ARROW 126
-# define RIGHT_ARROW 124
-# define DOWN_ARROW 125
-# define LEFT_ARROW 123
+# define UP_ARROW 13
+# define RIGHT_ARROW 2
+# define DOWN_ARROW 1
+# define LEFT_ARROW 0
 # define WALL_STRIP_WIDTH 1
 # define MINIMAP_SCALE 0.2
 # define ESCAPE 53
@@ -73,8 +74,8 @@ int				grid_has_wall_at(int x, int y);
 void			render_ray();
 void			save_sprite_texture(char **texture);
 void			draw_one_pixel(int y, int x, double color);
-void			free_memory();
-void			ft_error();
+int				free_memory(int status);
+void			ft_error(char *error);
 void			free_double_pointer(char **ptr);
 void			ft_map_error(int i, int j);
 void			generate_bitmap_image();
@@ -85,4 +86,15 @@ unsigned long	create_rgb(int r, int g, int b);
 int				ft_atoi(const char *str);
 void			ft_putstr(char *s);
 char			*ft_itoa(int n);
+int				is_player(int i, int j);
+void			get_args(int c, char **v);
+void			init_textures(void);
+void			check_missing_element(void);
+char			*make_bmp_header(t_bitmapheader *header);
+int				*get_colors(int color);
+char			*make_img_buff(t_bitmapheader *header);
+void			screenshot();
+void			*ft_calloc(size_t count, size_t size);
+void			*ft_memcpy(void *dst, const void *src, size_t n);
+void			*ft_strrchr(const char *s, int c);
 #endif

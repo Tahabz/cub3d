@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 11:13:18 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/29 11:36:23 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/29 17:59:38 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ void	cast_rays(void)
 	double	ray_angle;
 	int		i;
 
-	g_rays = (t_rays *)malloc(sizeof(t_rays) * g_win_width);
+	if (!g_rays)
+		g_rays = (t_rays *)malloc(sizeof(t_rays) * g_win_width);
 	ray_angle = g_player.rotation_angle - (g_fov_angle / 2);
 	i = 0;
 	while (i < g_win_width)
@@ -40,6 +41,4 @@ void	cast_rays(void)
 		ray_angle += (g_fov_angle / g_win_width);
 		i++;
 	}
-	if (g_rays)
-		free(g_rays);
 }

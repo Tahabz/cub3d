@@ -6,85 +6,89 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/28 17:07:29 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/29 11:12:48 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/08 14:05:22 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
 
-const int		g_bytes_per_pixel = 4;
-const int		g_file_header_size = 14;
-const int		g_info_header_size = 40;
-
-void			screenshot(void)
+char	*make_bmp_header(t_bitmapheader *header)
 {
-	generate_bitmap_image();
-	printf("Image generated!!");
+	char	*buf;
+
+	buf = ft_calloc(54, 1);
+	header->bit_count = 24;
+	header->width_in_bytes = ((g_win_width * header->bit_count + 31)
+	/ 32) * 4;
+	header->image_size = header->width_in_bytes * g_win_height;
+	header->size = 54 + header->image_size;
+	header->off_bits = 54;
+	header->info_size = 40;
+	header->planes = 1;
+	header->width = g_win_width;
+	header->height = g_win_height;
+	ft_memcpy(buf, "BM", 2);
+	ft_memcpy(buf + 2, &(header->size), 4);
+	ft_memcpy(buf + 10, &(header->off_bits), 4);
+	ft_memcpy(buf + 14, &(header->info_size), 4);
+	ft_memcpy(buf + 18, &(header->width), 4);
+	ft_memcpy(buf + 22, &(header->height), 4);
+	ft_memcpy(buf + 26, &(header->planes), 2);
+	ft_memcpy(buf + 28, &(header->bit_count), 2);
+	ft_memcpy(buf + 34, &(header->image_size), 4);
+	return (buf);
 }
 
-void			generate_bitmap_image(void)
+int		*get_colors(int color)
 {
-	int						fd;
-	int						i;
-	t_screenshot			screenshot;
-	static unsigned char	padding[3] = {0, 0, 0};
+	int *colors;
 
-	screenshot.width_in_bytes = g_win_width * g_bytes_per_pixel;
-	screenshot.padding_size = (4 - (screenshot.width_in_bytes) % 4) % 4;
-	screenshot.stride = screenshot.width_in_bytes + screenshot.padding_size;
-	fd = creat("screenshot.bmp", S_IRUSR | S_IWUSR);
-	screenshot.file_header = create_bitmap_file_header(screenshot.stride);
-	write(fd, screenshot.file_header, g_file_header_size);
-	screenshot.info_header = create_bitmap_info_header();
-	write(fd, screenshot.info_header, g_info_header_size);
-	i = g_win_height;
-	while (i)
+	colors = malloc(3 * sizeof(int));
+	colors[0] = ((color >> 16) & 0xFF);
+	colors[1] = ((color >> 8) & 0xFF);
+	colors[2] = ((color) & 0xFF);
+	return (colors);
+}
+
+char	*make_img_buff(t_bitmapheader *header)
+{
+	char	*buf;
+	int		i;
+	int		j;
+	int		*colors;
+
+	buf = malloc(header->image_size);
+	i = header->height - 1;
+	while (i > 0)
 	{
-		write(fd, (unsigned char *)g_data + (i * screenshot.width_in_bytes),
-				g_bytes_per_pixel * g_win_width);
-		write(fd, padding, screenshot.padding_size);
+		j = 0;
+		while (j < header->width)
+		{
+			colors = get_colors(g_data[((g_win_height - i)
+			* g_win_width) + j]);
+			buf[i * header->width_in_bytes + j * 3 + 2] = colors[0];
+			buf[i * header->width_in_bytes + j * 3 + 1] = colors[1];
+			buf[i * header->width_in_bytes + j * 3 + 0] = colors[2];
+			free(colors);
+			j++;
+		}
 		i--;
 	}
-	close(fd);
+	return (buf);
 }
 
-unsigned char	*create_bitmap_file_header(int stride)
+void	screenshot(void)
 {
-	int						file_size;
-	static unsigned char	file_header[] = {
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-	};
+	t_bitmapheader	header;
+	char			*header_str;
+	char			*img_buf;
 
-	file_size = g_file_header_size + g_info_header_size + stride * g_win_height;
-	file_header[0] = (unsigned char)('B');
-	file_header[1] = (unsigned char)('M');
-	file_header[2] = (unsigned char)(file_size);
-	file_header[3] = (unsigned char)(file_size >> 8);
-	file_header[4] = (unsigned char)(file_size >> 16);
-	file_header[5] = (unsigned char)(file_size >> 24);
-	file_header[10] = (unsigned char)(g_file_header_size + g_info_header_size);
-	return (file_header);
-}
-
-unsigned char	*create_bitmap_info_header(void)
-{
-	static unsigned char info_header[] = {
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
-		0, 0, 0, 0
-	};
-
-	info_header[0] = (unsigned char)(g_info_header_size);
-	info_header[4] = (unsigned char)(g_win_width);
-	info_header[5] = (unsigned char)(g_win_width >> 8);
-	info_header[6] = (unsigned char)(g_win_width >> 16);
-	info_header[7] = (unsigned char)(g_win_width >> 24);
-	info_header[8] = (unsigned char)(g_win_height);
-	info_header[9] = (unsigned char)(g_win_height >> 8);
-	info_header[10] = (unsigned char)(g_win_height >> 16);
-	info_header[11] = (unsigned char)(g_win_height >> 24);
-	info_header[12] = (unsigned char)(1);
-	info_header[14] = (unsigned char)(g_bytes_per_pixel * 8);
-	return (info_header);
+	header.fd = open("./screenshot.bmp", O_WRONLY | O_CREAT, S_IRUSR | S_IWUSR);
+	header_str = make_bmp_header(&header);
+	img_buf = make_img_buff(&header);
+	write(header.fd, header_str, 54);
+	write(header.fd, img_buf, header.image_size);
+	free(header_str);
+	free(img_buf);
+	free_memory(EXIT_SUCCESS);
 }

@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 11:22:26 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/29 14:07:04 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/07 13:44:21 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,21 +43,23 @@ void		render(void)
 	init_player();
 	cast_rays();
 	render_walls();
+	init_textures();
 }
 
 int			main(int c, char **v)
 {
 	g_att = 2;
-	if (c > 1)
-		if (strncmp("--save", v[1], 6) == 0)
-			g_att = 1;
+	get_args(c, v);
 	parse_file();
+	check_missing_element();
 	check_map_errors();
+	g_win_height2d = TILE_SIZE * g_num_rows;
 	add_sprite();
 	g_mlx = mlx_init();
 	g_window = mlx_new_window(g_mlx, g_win_width, g_win_height, "Cub3D");
 	mlx_hook(g_window, 2, 0, key_pressed, NULL);
 	mlx_hook(g_window, 3, 0, key_released, NULL);
+	mlx_hook(g_window, 17, 0, free_memory, NULL);
 	g_image = mlx_new_image(g_mlx, g_win_width, g_win_height);
 	g_data = (int *)mlx_get_data_addr(g_image, &g_bits_per_pixel,
 										&g_size_line, &g_endian);

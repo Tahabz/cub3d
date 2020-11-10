@@ -6,11 +6,21 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 12:16:49 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/26 13:32:17 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/07 13:48:01 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
+
+void	check_missing_element(void)
+{
+	if (!g_win_height || !g_win_width)
+		ft_error("Error\nMissing resolution information");
+	if (!g_floor_color[3])
+		ft_error("Error\nMissing floor information");
+	if (!g_ceilling_color[3])
+		ft_error("Error\nMissing ceilling information");
+}
 
 int		get_elements(int fd, char *line)
 {
@@ -30,6 +40,8 @@ int		get_elements(int fd, char *line)
 		else
 		{
 			element = ft_split(line, ' ');
+			if (!*element)
+				ft_error("Error\nInvalid file configuration");
 			check_element(element);
 		}
 	}
@@ -40,17 +52,21 @@ void	parse_file(void)
 {
 	int		fd;
 	char	*line;
+	int		status;
 
-	fd = open("file.cub", O_RDONLY);
-	if (fd)
+	status = 0;
+	fd = open(g_file, O_RDONLY);
+	if (fd > 0)
 	{
-		while (get_next_line(fd, &line))
+		while ((status = get_next_line(fd, &line)))
 		{
 			if (get_elements(fd, line) == 1)
 				return ;
 			free(line);
 		}
+		if (status == 0)
+			ft_error("Error\nInvalid file configuration");
 	}
 	else
-		printf("invalid file\n");
+		ft_error("Error\ninvalid file\n");
 }

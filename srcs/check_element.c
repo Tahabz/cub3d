@@ -6,11 +6,15 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 11:59:40 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/23 11:06:52 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/09 20:36:37 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
+
+
+
+
 
 void	check_element(char **element)
 {
@@ -30,4 +34,6 @@ void	check_element(char **element)
 		save_floor_color(element);
 	else if (strcmp(element[0], "C") == 0)
 		save_ceilling_color(element);
+	else
+		ft_error("Error\nInvalid element");
 }

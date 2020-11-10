@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/24 13:29:30 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/29 14:36:18 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/06 18:40:46 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,17 @@ void	ft_map_error(int i, int j)
 
 	row = ft_itoa(i);
 	col = ft_itoa(j);
-	ft_putstr("Map error in row ");
+	ft_putstr("Error\nMap error in row ");
 	ft_putstr(row);
 	ft_putstr(" column ");
 	ft_putstr(col);
 	free(row);
 	free(col);
-	free_memory();
+	free_memory(EXIT_FAILURE);
 }
 
 void	ft_error(char *error)
 {
-	printf("%s\n", error);
-	free_memory();
+	ft_putstr(error);
+	free_memory(EXIT_FAILURE);
 }

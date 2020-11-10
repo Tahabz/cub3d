@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 12:48:09 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/23 11:06:49 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/06 19:21:42 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,5 @@ void	parse_map(int fd, char *line)
 	g_num_rows = i;
 	g_map[i] = 0;
 	i = 0;
-	while (g_map[i])
-		printf("%s\n", g_map[i++]);
 	check_map_errors();
 }

@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 13:40:37 by mobaz             #+#    #+#             */
-/*   Updated: 2020/10/23 11:51:37 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/10/30 12:20:24 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,8 +26,8 @@ void	horizental_grid_intersection(void)
 	g_ray_vars.hor_hit_x = g_ray_vars.xintersection;
 	g_ray_vars.hor_hit_y = g_ray_vars.yintersection;
 	while (g_ray_vars.hor_hit_y >= 0 &&
-		g_ray_vars.hor_hit_y < WIN_HEIGHT2D && g_ray_vars.hor_hit_x
-		>= 0 && g_ray_vars.hor_hit_x < WIN_WIDTH2D)
+		g_ray_vars.hor_hit_y < g_win_height2d && g_ray_vars.hor_hit_x
+		>= 0)
 	{
 		if (grid_has_wall_at(g_ray_vars.hor_hit_x, g_ray.facing_up ?
 			g_ray_vars.hor_hit_y - 1 : g_ray_vars.hor_hit_y))
@@ -55,8 +55,8 @@ void	vertical_grid_intersection(void)
 	g_ray_vars.ystep *= (g_ray.facing_down && g_ray_vars.ystep < 0) ? -1 : 1;
 	g_ray_vars.ver_hit_x = g_ray_vars.xintersection;
 	g_ray_vars.ver_hit_y = g_ray_vars.yintersection;
-	while (g_ray_vars.ver_hit_y >= 0 && g_ray_vars.ver_hit_y < WIN_HEIGHT2D
-	&& g_ray_vars.ver_hit_x >= 0 && g_ray_vars.ver_hit_x < WIN_WIDTH2D)
+	while (g_ray_vars.ver_hit_y >= 0 && g_ray_vars.ver_hit_y < g_win_height2d
+	&& g_ray_vars.ver_hit_x >= 0)
 	{
 		if (grid_has_wall_at(g_ray.facing_left ? g_ray_vars.ver_hit_x
 		- 1 : g_ray_vars.ver_hit_x, g_ray_vars.ver_hit_y))
