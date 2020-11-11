@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/23 11:22:26 by mobaz             #+#    #+#             */
-/*   Updated: 2020/11/07 13:44:21 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/11 12:58:10 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,6 @@ int			main(int c, char **v)
 	get_args(c, v);
 	parse_file();
 	check_missing_element();
-	check_map_errors();
 	g_win_height2d = TILE_SIZE * g_num_rows;
 	add_sprite();
 	g_mlx = mlx_init();

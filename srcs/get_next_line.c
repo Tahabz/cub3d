@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/23 16:17:20 by mobaz             #+#    #+#             */
-/*   Updated: 2020/11/09 13:09:47 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/10 19:28:20 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,10 @@ int		get_next_line(int fd, char **line)
 
 	state = 1;
 	if (!str)
-		str = ft_char_calloc(1);
+	{
+		str = malloc(1);
+		str[0] = 0;
+	}
 	if (BUFFER_SIZE <= 0 || BUFFER_SIZE > MAXINT || !line)
 		return (-1);
 	if (!(*line = malloc(BUFFER_SIZE + 1)))

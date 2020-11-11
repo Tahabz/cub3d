@@ -6,35 +6,35 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 12:48:33 by mobaz             #+#    #+#             */
-/*   Updated: 2020/11/06 18:14:38 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/11 19:06:15 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
 
-int		is_player(int i, int j)
-{
-	if (g_map[i][j - 1] == 'N' || g_map[i][j - 1] == 'W'
-		|| g_map[i][j - 1] == 'E' || g_map[i][j - 1] == 'S')
-		return (1);
-	else if (g_map[i][j + 1] == 'N' || g_map[i][j + 1] == 'W'
-		|| g_map[i][j + 1] == 'E' || g_map[i][j + 1] == 'S')
-		return (1);
-	else if (g_map[i + 1][j] == 'N' || g_map[i + 1][j] == 'W'
-		|| g_map[i + 1][j] == 'E' || g_map[i + 1][j] == 'S')
-		return (1);
-	else if (g_map[i - 1][j] == 'N' || g_map[i - 1][j] == 'W'
-		|| g_map[i - 1][j] == 'E' || g_map[i - 1][j] == 'S')
-		return (1);
-	else if (g_map[i - 1][j - 1] == 'N' || g_map[i - 1][j - 1] == 'W'
-		|| g_map[i - 1][j - 1] == 'E' || g_map[i - 1][j - 1] == 'S')
-		return (1);
-	else if (g_map[i - 1][j + 1] == 'N' || g_map[i - 1][j + 1] == 'W'
-		|| g_map[i - 1][j + 1] == 'E' || g_map[i - 1][j + 1] == 'S')
-		return (1);
-	else
-		return (0);
-}
+// int		is_player(int i, int j)
+// {
+// 	if (g_map[i][j - 1] == 'N' || g_map[i][j - 1] == 'W'
+// 		|| g_map[i][j - 1] == 'E' || g_map[i][j - 1] == 'S')
+// 		return (1);
+// 	else if (g_map[i][j + 1] == 'N' || g_map[i][j + 1] == 'W'
+// 		|| g_map[i][j + 1] == 'E' || g_map[i][j + 1] == 'S')
+// 		return (1);
+// 	else if (g_map[i + 1][j] == 'N' || g_map[i + 1][j] == 'W'
+// 		|| g_map[i + 1][j] == 'E' || g_map[i + 1][j] == 'S')
+// 		return (1);
+// 	else if (g_map[i - 1][j] == 'N' || g_map[i - 1][j] == 'W'
+// 		|| g_map[i - 1][j] == 'E' || g_map[i - 1][j] == 'S')
+// 		return (1);
+// 	else if (g_map[i - 1][j - 1] == 'N' || g_map[i - 1][j - 1] == 'W'
+// 		|| g_map[i - 1][j - 1] == 'E' || g_map[i - 1][j - 1] == 'S')
+// 		return (1);
+// 	else if (g_map[i - 1][j + 1] == 'N' || g_map[i - 1][j + 1] == 'W'
+// 		|| g_map[i - 1][j + 1] == 'E' || g_map[i - 1][j + 1] == 'S')
+// 		return (1);
+// 	else
+// 		return (0);
+// }
 
 void	init_player(void)
 {

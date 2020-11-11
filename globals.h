@@ -6,20 +6,12 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:07:27 by mobaz             #+#    #+#             */
-/*   Updated: 2020/11/09 20:36:02 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/08 13:40:55 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef GLOBALS_H
 # define GLOBALS_H
-
-
-
-
-
-
-
-
 
 char				**g_map;
 void				*g_image;

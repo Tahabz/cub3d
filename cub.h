@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:43:34 by mobaz             #+#    #+#             */
-/*   Updated: 2020/11/08 14:41:13 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/11 19:05:56 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,4 +97,5 @@ void			screenshot();
 void			*ft_calloc(size_t count, size_t size);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
 void			*ft_strrchr(const char *s, int c);
+void			map_error(void);
 #endif
