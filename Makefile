@@ -13,7 +13,6 @@ SRCS =	srcs/ft_putchar.c \
 		srcs/check_element.c \
 		srcs/save_resolution.c \
 		srcs/parse_file.c \
-		srcs/check_map_error.c \
 		srcs/get_image.c \
 		srcs/save_direction_textures.c \
 		srcs/render_walls.c \
@@ -37,20 +36,22 @@ SRCS =	srcs/ft_putchar.c \
 		srcs/ft_calloc.c \
 		srcs/ft_memcpy.c \
 		srcs/ft_strrchr.c \
-		srcs/map_error.c
+		srcs/map_error.c \
+		srcs/map_error_utils.c
+NAME = cub3D
 
-all: comp
+all: lib $(NAME)
 
-lib :
+lib:
 	cd libft; make
 
-comp : lib
+$(NAME):
 	gcc $(FLAGS) -o cub3D -I /usr/local/include $(SRCS) libft/libft.a -L /usr/local/lib/ -lmlx -framework OpenGL -framework AppKit 
 
-clean :
+clean:
 	rm -rf cub3D
 
 fclean: clean
 	rm *.bmp; cd libft; make fclean
 
-re : fclean comp
+re: fclean all

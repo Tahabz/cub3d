@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 20:07:27 by mobaz             #+#    #+#             */
-/*   Updated: 2020/11/08 13:40:55 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/12 10:28:31 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -117,4 +117,5 @@ int					g_bits_per_pixel;
 int					g_size_line;
 int					g_endian;
 char				*g_file;
+int					g_prev_len;
 #endif

@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 15:43:34 by mobaz             #+#    #+#             */
-/*   Updated: 2020/11/11 19:05:56 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/12 10:26:59 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,8 @@ void			*ft_calloc(size_t count, size_t size);
 void			*ft_memcpy(void *dst, const void *src, size_t n);
 void			*ft_strrchr(const char *s, int c);
 void			map_error(void);
+void			check_if_valid(int i, int j);
+void			check_next_row(int i, int j, char c, int curr_len);
+void			check_prev_row(int i, int j, char c, int curr_len);
+void			check_up_down(int i, int j, char c, int curr_len);
 #endif

@@ -6,35 +6,39 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 12:48:33 by mobaz             #+#    #+#             */
-/*   Updated: 2020/11/11 19:06:15 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/12 10:36:01 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../cub.h"
 
-// int		is_player(int i, int j)
-// {
-// 	if (g_map[i][j - 1] == 'N' || g_map[i][j - 1] == 'W'
-// 		|| g_map[i][j - 1] == 'E' || g_map[i][j - 1] == 'S')
-// 		return (1);
-// 	else if (g_map[i][j + 1] == 'N' || g_map[i][j + 1] == 'W'
-// 		|| g_map[i][j + 1] == 'E' || g_map[i][j + 1] == 'S')
-// 		return (1);
-// 	else if (g_map[i + 1][j] == 'N' || g_map[i + 1][j] == 'W'
-// 		|| g_map[i + 1][j] == 'E' || g_map[i + 1][j] == 'S')
-// 		return (1);
-// 	else if (g_map[i - 1][j] == 'N' || g_map[i - 1][j] == 'W'
-// 		|| g_map[i - 1][j] == 'E' || g_map[i - 1][j] == 'S')
-// 		return (1);
-// 	else if (g_map[i - 1][j - 1] == 'N' || g_map[i - 1][j - 1] == 'W'
-// 		|| g_map[i - 1][j - 1] == 'E' || g_map[i - 1][j - 1] == 'S')
-// 		return (1);
-// 	else if (g_map[i - 1][j + 1] == 'N' || g_map[i - 1][j + 1] == 'W'
-// 		|| g_map[i - 1][j + 1] == 'E' || g_map[i - 1][j + 1] == 'S')
-// 		return (1);
-// 	else
-// 		return (0);
-// }
+void	get_player_pos_map(int i, int j)
+{
+	g_player.x = j * 200 + 100;
+	g_player.y = i * 200 + 100;
+	if (g_map[i][j] == 'N')
+		g_player.rotation_angle = (3 * M_PI) / 2;
+	else if (g_map[i][j] == 'S')
+		g_player.rotation_angle = M_PI / 2;
+	else if (g_map[i][j] == 'E')
+		g_player.rotation_angle = 0;
+	else if (g_map[i][j] == 'W')
+		g_player.rotation_angle = M_PI;
+}
+
+int		is_player(int i, int j)
+{
+	if (g_player_count > 1)
+		ft_map_error(i, j);
+	if (g_map[i][j] == 'N' || g_map[i][j] == 'S' || g_map[i][j] == 'E' ||
+		g_map[i][j] == 'W')
+	{
+		get_player_pos_map(i, j);
+		g_player_count++;
+		return (1);
+	}
+	return (0);
+}
 
 void	init_player(void)
 {

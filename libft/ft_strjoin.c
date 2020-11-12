@@ -6,12 +6,13 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/11 23:22:45 by mobaz             #+#    #+#             */
-/*   Updated: 2020/11/10 19:33:23 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/12 10:32:41 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 #include <stdio.h>
+
 char	*ft_strjoin(char *s1, char *s2)
 {
 	char		*ptr;
