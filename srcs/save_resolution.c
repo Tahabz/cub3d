@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/10/19 19:58:03 by mobaz             #+#    #+#             */
-/*   Updated: 2020/11/06 19:20:53 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/12 11:23:15 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,11 +47,15 @@ void	save_resolution(char **resolution)
 		{
 			g_win_width = ft_atoi(resolution[1]);
 			g_win_width = g_win_width > 2560 ? 2560 : g_win_width;
+			if (g_win_width < 0)
+				ft_error("Error\nIncorrect resolution");
 		}
 		else if (i == 2)
 		{
 			g_win_height = ft_atoi(resolution[2]);
 			g_win_height = g_win_height > 1440 ? 1440 : g_win_height;
+			if (g_win_height < 0)
+				ft_error("Error\nIncorrect resolution");
 		}
 		i++;
 	}
