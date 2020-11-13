@@ -55,3 +55,5 @@ fclean: clean
 	rm *.bmp; cd libft; make fclean
 
 re: fclean all
+
+bonus: all
