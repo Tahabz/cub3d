@@ -6,7 +6,7 @@
 /*   By: mobaz <mobaz@student.42.fr>                +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/10/14 13:38:53 by mobaz             #+#    #+#             */
-/*   Updated: 2020/11/09 13:14:58 by mobaz            ###   ########.fr       */
+/*   Updated: 2020/11/13 13:40:35 by mobaz            ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,4 +67,5 @@ int				ft_isascii(int c);
 char			*ft_strtrim(char const *s1, char const *set);
 size_t			ft_strlcat(char *dst, const char *src, size_t size);
 size_t			ft_strlcpy(char *dst, const char *src, size_t size);
+int				ft_strcmp(const char *x, const char *y);
 #endif
